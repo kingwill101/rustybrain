@@ -18,7 +18,7 @@ impl GameContext {
     }
 }
 
-enum GameType {
+pub enum GameType {
     None,
     LogicPuzzle,
     Memory,
@@ -70,7 +70,7 @@ impl Default for GameType {
     }
 }
 
-enum GameDifficulty {
+pub enum GameDifficulty {
     None,
     Easy,
     Medium,
@@ -119,19 +119,19 @@ impl Default for GameDifficulty {
 }
 
 #[derive(Default, Clone)]
-struct Position {
+pub struct Position {
     pub x: f64,
     pub y: f64,
 }
 
 #[derive(Default, Clone)]
-struct Dimensions {
+pub struct Dimensions {
     pub width: f64,
     pub height: f64,
 }
 
 #[derive(Default, Clone)]
-struct Image {
+pub struct Image {
     position: Position,
     dimensions: Dimensions,
     path: String,
@@ -178,7 +178,7 @@ impl Default for ObjectSize {
 }
 
 #[derive(Default)]
-struct TextObject {
+pub struct TextObject {
     position: Position,
     text: String,
     centered: bool,
@@ -186,7 +186,7 @@ struct TextObject {
 }
 
 #[derive(Clone)]
-enum QuestionType {
+pub enum QuestionType {
     MultipleOptions,
     PairOfWordsOptions,
     PairOfWordsCompare,
@@ -200,20 +200,20 @@ impl Default for QuestionType {
 }
 
 #[derive(Default, Clone, )]
-struct QuestionObject {
-    value: String,
-    plural: String,
-    question_ype: QuestionType,
+pub struct QuestionObject {
+    pub value: String,
+    pub plural: String,
+    pub question_ype: QuestionType,
 }
 
 #[derive(Default, Clone, )]
 pub struct GameData {
-    name: String,
-    game_type: GameType,
-    difficulty: GameDifficulty,
-    variables: String,
-    image: Image,
-    question: QuestionObject,
+    pub name: String,
+    pub game_type: GameType,
+    pub difficulty: GameDifficulty,
+    pub variables: String,
+    pub image: Image,
+    pub question: QuestionObject,
 }
 
 impl Display for GameData {

@@ -31,7 +31,7 @@ pub struct Game {
 impl Game {
 
     pub fn get_question(&self) -> String{
-        crate::engine::helpers::get_question(self.questions.as_ref())
+        crate::engine::game::grab_game_data(self, None).question.value
     }
 }
 

@@ -9,8 +9,6 @@ extern crate log;
 
 mod utils;
 pub mod game;
-mod game_context;
-pub(crate) mod helpers;
 pub mod manager;
 
 pub struct Engine {
