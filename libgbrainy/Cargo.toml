@@ -1,0 +1,16 @@
+[package]
+name = "libgbrainy"
+version = "0.1.0"
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+quick-xml = { version = "0.22.0", features = [ "serialize" ] }
+serde = "1.0.130"
+serde_derive = "1.0.130"
+serde-xml-rs = "0.5.1"
+Boa = "0.13.0"
+regex = "1.5.4"
+colog = "1.1.0"
+log = "0.4"
