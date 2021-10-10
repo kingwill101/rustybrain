@@ -137,7 +137,6 @@ pub struct Image {
     path: String,
 }
 
-
 enum ObjectSize {
     Small,
     Medium,
@@ -214,6 +213,8 @@ pub struct GameData {
     pub variables: String,
     pub image: Image,
     pub question: QuestionObject,
+    pub rationale: String,
+
 }
 
 impl Display for GameData {
@@ -285,6 +286,28 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
         if game.questions.as_ref().is_some() {
             process_question(game.questions.as_ref().unwrap(), &mut question);
         }
+        //rationale
+        game_data.rationale = if game.rationale.as_ref().is_some() {
+            game.rationale.as_ref().unwrap().to_string()
+        } else {
+            String::new()
+        };
+
+        game_data.image = if game.svg.is_some() {
+            let mut image = Image::default();
+            image.position = Position{
+                x: game.svg.as_ref().unwrap().get(0).unwrap().x,
+                y: game.svg.as_ref().unwrap().get(0).unwrap().y,
+            };
+
+            image.dimensions = Dimensions{
+                width: game.svg.as_ref().unwrap().get(0).unwrap().width,
+                height: game.svg.as_ref().unwrap().get(0).unwrap().height,
+            };
+            image.path = game.svg.as_ref().unwrap().get(0).unwrap().file.as_str().to_string();
+            image
+        }else { Image::default() }
+
     } else {
         game_data.variables = if variant.as_ref().unwrap().variables.is_some() {
             variant.as_ref().unwrap().variables.as_ref().unwrap().to_string()
@@ -295,6 +318,28 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
         if variant.as_ref().unwrap().question.as_ref().is_some() {
             process_question(variant.as_ref().unwrap().question.as_ref().unwrap(), &mut question);
         }
+        //rationale
+        game_data.rationale = if variant.as_ref().unwrap().rationale.as_ref().is_some() {
+            variant.as_ref().unwrap().rationale.as_ref().unwrap().to_string()
+        } else {
+            String::new()
+        };
+
+        game_data.image = if variant.as_ref().unwrap().svg.is_some() {
+            let mut image = Image::default();
+            image.position = Position{
+                x: variant.as_ref().unwrap().svg.as_ref().unwrap().get(0).unwrap().x,
+                y: variant.as_ref().unwrap().svg.as_ref().unwrap().get(0).unwrap().y,
+            };
+
+            image.dimensions = Dimensions{
+                width: variant.as_ref().unwrap().svg.as_ref().unwrap().get(0).unwrap().width,
+                height: variant.as_ref().unwrap().svg.as_ref().unwrap().get(0).unwrap().height,
+            };
+            image.path = variant.as_ref().unwrap().svg.as_ref().unwrap().get(0).unwrap().file.as_str().to_string();
+            image
+        }else { Image::default() }
+
     }
 
     game_data.question = question;

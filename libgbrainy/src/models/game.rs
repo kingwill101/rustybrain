@@ -8,7 +8,7 @@ pub struct GameCollection {
     pub games: Vec<Game>,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Default, Debug, Serialize, Deserialize)]
 pub struct Game {
     #[serde(rename = "name")]
     pub name: String,
@@ -37,23 +37,13 @@ impl Game {
 
 impl Game {
     pub fn new() -> Game {
-        Game{
-            name: "".to_string(),
-            type_: "".to_string(),
-            difficulty: "".to_string(),
-            variables: None,
-            rationale: None,
-            variants: None,
-            svg: None,
-            questions: None,
-            options: None
-        }
+        Game::default()
     }
 }
 
 
 #[derive(Debug, Serialize, Deserialize, )]
-pub struct GameOption {
+pub struct                  GameOption {
     pub x: f64,
     pub y: f64,
     pub width: f64,
