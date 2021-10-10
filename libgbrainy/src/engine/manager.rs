@@ -1,6 +1,7 @@
 use crate::engine::game::{GameData, grab_game_data};
 use crate::models::game::Game;
 use std::fmt::{Display, Formatter};
+use rand::{self, Rng};
 
 pub struct Manager {
     pub games: Vec<GameData>,
@@ -31,6 +32,10 @@ impl Manager {
 
             }
         }
+    }
+
+    pub fn random_game(&self) -> &GameData {
+         self.games.get(rand::thread_rng().gen_range(0..self.games.len())).unwrap()
     }
 }
 
