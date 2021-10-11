@@ -302,6 +302,12 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
     let mut rat = RationaleObject { ..Default::default() };
 
 
+    //unique cases where variants don't have questions but questions may exist
+    //on the parent Game object
+    if variant.as_ref().is_some() && variant.as_ref().unwrap().question.is_none()  && game.questions.is_some() {
+        process_question(game.questions.as_ref().unwrap().as_ref(), &mut question);
+    }
+
     if variant.as_ref().is_none() {
         game_data.variables = match game.variables.as_ref() {
             None => { "".to_string() }
