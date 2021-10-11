@@ -345,13 +345,6 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
         if variant.as_ref().unwrap().rationale.as_ref().is_some() {
             process_rationale(variant.as_ref().unwrap().rationale.as_ref().unwrap(), &mut rat);
         }
-        //rationale
-        game_data.rationale = if variant.as_ref().unwrap().rationale.as_ref().is_some() {
-            variant.as_ref().unwrap().rationale.as_ref().unwrap().to_string()
-        } else {
-            String::new()
-        };
-
         game_data.image = if variant.as_ref().unwrap().svg.is_some() {
             let mut image = Image::default();
             image.position = Position{
