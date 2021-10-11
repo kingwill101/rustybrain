@@ -1,3 +1,5 @@
+extern crate log;
+
 use std::borrow::BorrowMut;
 
 use boa::Context;
@@ -5,7 +7,6 @@ use log::{info, warn};
 
 use crate::engine::utils::{clean_var_name, get_variables};
 
-extern crate log;
 
 mod utils;
 pub mod game;
@@ -33,9 +34,7 @@ impl Engine {
     }
 
     pub fn parse_variables(&mut self, variables: &str) {
-        for x in variables.lines() {
-            self.parse(x.trim().to_string())
-        }
+        self.parse(variables.trim().to_string())
     }
 
     pub fn find_var(&mut self, var: &str) -> Option<String> {
@@ -59,15 +58,14 @@ impl Engine {
             info!("processing {}", v);
             variable_name = clean_var_name(v);
 
-            let result =self.find_var(variable_name.as_str());
+            let result = self.find_var(variable_name.as_str());
 
-            if result.is_none(){
+            if result.is_none() {
                 warn!("variable {} was not found", v);
                 continue;
             }
             info!("updating {} with  {}", v,result.as_ref().unwrap().as_str());
             replaced = replaced.replace(v, result.as_ref().unwrap().as_str());
-            
         }
 
         replaced
@@ -79,7 +77,6 @@ mod tests {
     use std::collections::HashMap;
 
     use crate::engine::Engine;
-    
 
     #[test]
     fn value_lookup() {
@@ -124,6 +121,5 @@ mod tests {
 
         result = engine.interop("My name is [first_name] [last_name] and i am [age] years old");
         assert_eq!(result, "My name is Glenford Williams and i am 10 years old");
-
     }
 }
