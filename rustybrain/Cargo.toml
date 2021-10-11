@@ -7,3 +7,5 @@ edition = "2018"
 
 [dependencies]
 libgbrainy = { path = "../libgbrainy" }
+colog = "1.1.0"
+log = "0.4.14"

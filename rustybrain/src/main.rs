@@ -1,27 +1,38 @@
-use libgbrainy;
-use libgbrainy::engine::manager::Manager;
-use libgbrainy::engine::game::GameData;
-use crate::data::get_game_xml;
+extern crate colog;
+extern crate log;
 
-mod data;
-mod rusty;
+use libgbrainy;
+use libgbrainy::engine::game::GameData;
+use libgbrainy::engine::manager::Manager;
+use libgbrainy::models::game::GameCollection;
 
 fn main() {
+
+    colog::init();
+    let bytes = include_bytes!("../../data/games.xml");
+
     let collection = libgbrainy::reader::parse_game_data(
-        get_game_xml()
+        Box::from(
+            &*String::from_utf8_lossy(bytes)
+        )
     );
 
-    let mut game_manager = Manager::new();
-    game_manager.load_games(collection.games);
+    match collection {
+        None => {
+            log::warn!("Parsing error");
+            return
+        }
+        Some(data) => {
+            let mut game_manager = Manager::new();
 
-    println!("{} games found", game_manager.games.len());
-    println!("{}", game_manager);
+            game_manager.load_games(data.games);
 
 
-    let mut engine = libgbrainy::engine::Engine::new();
-    let game = game_manager.random_game();
-    engine.parse_variables(game.variables.as_str());
-    println!("{}", game);
-    println!("{}", engine.interop(game.question.value.as_str()));
-
+            let mut engine = libgbrainy::engine::Engine::new();
+            let game = game_manager.random_game();
+            engine.parse_variables(game.variables.as_str());
+            println!("{}", game);
+            println!("{}", engine.interop(game.question.text.singular.as_str()));
+        }
+    }
 }
