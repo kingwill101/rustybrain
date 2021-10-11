@@ -1,15 +1,19 @@
-use crate::engine::game::{GameData, grab_game_data};
-use crate::models::game::Game;
 use std::fmt::{Display, Formatter};
+
 use rand::{self, Rng};
 
+use crate::engine::game::{GameData, grab_game_data};
+use crate::models::game::Game;
+
 pub struct Manager {
-    pub games: Vec<GameData>,
+    games: Vec<GameData>,
 }
 
 impl Manager {
-
-    pub fn new() -> Manager{
+    pub fn available_games(&self) -> &Vec<GameData> {
+        return self.games.as_ref();
+    }
+    pub fn new() -> Manager {
         Manager::default()
     }
 
@@ -29,27 +33,29 @@ impl Manager {
             } else {
                 game = grab_game_data(g, None);
                 self.add_game(game);
-
             }
         }
     }
 
     pub fn random_game(&self) -> &GameData {
-         self.games.get(rand::thread_rng().gen_range(0..self.games.len())).unwrap()
+        self.games.get(rand::thread_rng().gen_range(0..self.games.len())).unwrap()
     }
 }
 
-impl Display for Manager{
+impl Display for Manager {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        self.games.iter().for_each(|g|{
-            g.fmt(f);
+        self.games.iter().for_each(|g| {
+            match g.fmt(f) {
+                Ok(_) => {}
+                Err(_) => {}
+            }
         });
 
         write!(f, "")
     }
 }
 
-impl Default for Manager{
+impl Default for Manager {
     fn default() -> Self {
         Manager {
             games: vec![]
