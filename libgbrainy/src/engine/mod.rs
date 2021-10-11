@@ -52,6 +52,8 @@ impl Engine {
     }
 
     pub fn interop(&mut self, content: &str) -> String {
+
+        //TODO handle [option_answers]
         let mut replaced = String::from(content);
         let mut variable_name: String;
         for v in get_variables(content).iter() {
