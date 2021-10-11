@@ -23,9 +23,12 @@ impl Engine {
     }
 
     fn parse(&mut self, src: String) {
+        log::info!("parsing: \n {}", src);
         match self.context.eval(src) {
             Ok(_) => {}
-            Err(_) => {}
+            Err(e) => {
+                println!("{}", format!("{}", e.display()))
+            }
         }
     }
 
