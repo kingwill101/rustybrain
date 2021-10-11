@@ -1,0 +1,851 @@
+<!---
+		This is a collection of games definitions for gbrainy. This work is licensed under GPL 2.0 or higher license.
+		This is the same license that gbrainy package.
+
+		Authors:
+			Jordi Mas <jmas at softcatala dot org>
+
+		See: https://wiki.gnome.org/Apps/gbrainy/Extending for more details about how to use this file and its format.
+
+		You can also look at GameXmlFactory.cs source code file as reference.
+-->
+<games>
+	<game>
+		<_name>Clock rotation</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<variables>
+			int num = (1 + random.Next (5)) * 10;
+			int rslt = (2 * 360) + (num * 6);
+		</variables>
+		<_rationale>Every hour rotates 360 degrees.</_rationale>
+		<svg file = "clock.svg" x = "0.25" y = "0.25" width = "0.5" height = "0.5"/>
+		<question>How many degrees rotates the minute hand of a clock in 2 hours [num] minute?</question>
+		<question plural ="[rslt]">How many degrees rotates the minute hand of a clock in 2 hours [num] minutes?</question>
+		<answer>[rslt]</answer>
+	</game>
+
+	<game>
+		<_name>Brothers and sisters</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<svg file = "family.svg" x = "0.15" y = "0.25" width = "0.625" height = "0.5"/>
+		<variant>
+			<variables>
+				int people = 40;
+				int brothers = 10 + random.Next (8);
+				int sisters = 12 + random.Next (8);
+				int both = 5 + random.Next (5);
+				int brothers_only = (brothers - both);
+				int sisters_only = (sisters - both);
+				int rslt = people - brothers_only - sisters_only - both;
+			</variables>
+			<_question>Out of [people] people, [brothers] have brothers, [sisters] have sisters and [both] have both. How many people have neither brothers nor sisters?</_question>
+			<answer>[rslt]</answer>
+			<_rationale>It is calculated by taking the total number of people minus [brothers_only] people that have brothers only, minus [sisters_only] that have sisters only and minus [both] that have sisters and brothers.</_rationale>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Age</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<svg file = "father_son.svg" x = "0.2" y = "0.25" width = "0.6" height = "0.4"/>
+		<variant>
+			<variables>
+				int father = 46;
+				int difference = 2 + random.Next (8);
+				int son = (father / 2) - difference;
+			</variables>
+			<question>John is 46 years old. His son is [difference] year younger than half of John's age. How old is John's son?</question>
+			<question plural ="[difference]">John is 46 years old. His son is [difference] years younger than half of John's age. How old is John's son?</question>
+			<_rationale>John's son age is nowadays half of John's age minus [difference], that is, ([father] / 2) - [difference].</_rationale>
+			<answer>[son]</answer>
+		</variant>
+		<variant>
+			<variables>
+				int [] proportions = new int [] {3,4,5};
+				int [] years = new int [] {12, 16, 18};
+				int idx = random.Next (years.Length);
+
+				int ago = years [idx];
+				int proportion = proportions [idx];
+			</variables>
+			<question>John's age is nowadays 2 times his son's age. [ago] year ago, John was [proportion] times as old as his son. How old is John's son nowadays?</question>
+			<question plural ="[ago]">John's age is nowadays 2 times his son's age. [ago] years ago, John was [proportion] times as old as his son. How old is John's son nowadays?</question>
+			<answer>24</answer>
+			<rationale>John's age (variable x) is nowadays 2 times his son's age (variable y), that is x = 2y, and [ago] year ago, John was [proportion] times as old as his son: x - [ago] = (y - [ago]) * [proportion].</rationale>
+			<rationale plural ="[ago]">John's age (variable x) is nowadays 2 times his son's age (variable y), that is x = 2y, and [ago] years ago, John was [proportion] times as old as his son: x - [ago] = (y - [ago]) * [proportion].</rationale>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Password</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<svg file = "password.svg" x = "0.2" y = "0.25" width = "0.6" height = "0.3"/>
+		<variant>
+			<variables>
+				int digits = 4 + random.Next (3);
+				int rslt = (int) Math.Pow (10, digits);
+			</variables>
+			<question>A file is protected by a password formed by a [digits] digit number represented in base 10 (ranging from 0 to 9). How many different passwords can you have?</question>
+			<question plural="[digits]">A file is protected by a password formed by a [digits] digits number represented in base 10 (ranging from 0 to 9). How many different passwords can you have?</question>
+			<answer>[rslt]</answer>
+			<_rationale>Every digit has 10 possibilities. The total number of possibilities is 10 at the power of [digits].</_rationale>
+		</variant>
+		<variant>
+			<variables>
+				int digits = 2 + random.Next (2);
+				int rslt = (int) Math.Pow (8, digits);
+			</variables>
+			<question>A file is protected by a password formed by a [digits] digit represented in base 8 (ranging from 0 to 7). How many different passwords can you have?</question>
+			<question plural="[digits]">A file is protected by a password formed by a [digits] digits represented in base 8 (ranging from 0 to 7). How many different passwords can you have?</question>
+			<answer>[rslt]</answer>
+			<_rationale>Every digit has 8 possibilities. The total number of possibilities is 8 at the power of [digits].</_rationale>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Tennis game</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<svg file = "tennis.svg" x = "0.25" y = "0.25" width = "0.5" height = "0.5"/>
+		<variant>
+			<variables>
+				int games = 5 + random.Next (5);
+				int rslt = (int) Math.Pow (2, games);
+			</variables>
+			<question>There is [games] tennis game played simultaneously. How many different forecasts are possible?</question>
+			<question plural="[games]">There are [games] tennis games played simultaneously. How many different forecasts are possible?</question>
+			<answer>[rslt]</answer>
+			<_rationale>Every game is an independent event with 2 possible results. The total number of possibilities is 2 at the power of [games].</_rationale>
+		</variant>
+		<variant>
+			<variables>
+				int players = 32 + (random.Next (16) * 2);
+				int rslt = players -1;
+			</variables>
+			<question>In a tennis tournament, in every match a player is eliminated after losing to a single opponent. How many matches does it take to determine the winner of a tennis tournament that starts with [players] player?</question>
+			<question plural ="[players]">In a tennis tournament, in every match a player is eliminated after losing to a single opponent. How many matches does it take to determine the winner of a tennis tournament that starts with [players] players?</question>
+			<_rationale>In every match you eliminate one player. Therefore, the result is the total number of player minus one.</_rationale>
+			<answer>[rslt]</answer>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Bank interest</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<svg file = "money.svg" x = "0.25" y = "0.15" width = "0.5" height = "0.5"/>
+		<variant>
+			<variables>
+				int years = 2;
+				double interest = 0.10;
+				int [] money_options = new int [] {100, 200, 300, 400, 500, 600};
+				int money = money_options [random.Next (money_options.Length)];
+
+				double rslt =  money * (Math.Pow (1 + interest, years));
+			</variables>
+			<question>You have [money] monetary unit in your bank account at 10% interest compounded annually. How much money will you have at the end of 2 years?</question>
+			<question plural = "[money]">You have [money] monetary units in your bank account at 10% interest compounded annually. How much money will you have at the end of 2 years?</question>
+			<answer>[rslt]</answer>
+			<_rationale>Compound interest is paid on the principal plus any past interest accumulated.</_rationale>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Simple equations</_name>
+		<type>Calculation</type>
+		<difficulty>All</difficulty>
+
+		<!-- Addition -->
+		<variant>
+			<variables>
+				int num_a = 30 + random.Next (20);
+				int num_b = 60 + random.Next (20);
+				int rslt = num_b - num_a;
+			</variables>
+			<_question>What number plus [num_a] equals [num_b]?</_question>
+			<string _text = "x + [num_a] = [num_b]" x = "0.5" y = "0.4" centered = "yes" size = "large"/>
+			<answer>[rslt]</answer>
+			<_rationale>It is the result of the operation [num_b] - [num_a].</_rationale>
+		</variant>
+
+		<!-- Subtraction -->
+		<variant>
+			<variables>
+				int num_a = 30 + random.Next (20);
+				int num_b = 60 + random.Next (20);
+				int rslt = num_b + num_a;
+			</variables>
+			<_question>What number minus [num_a] equals [num_b]?</_question>
+			<string _text = "x - [num_a] = [num_b]" x = "0.5" y = "0.4" centered = "yes" size = "large"/>
+			<answer>[rslt]</answer>
+			<_rationale>It is the result of the operation [num_a] + [num_b].</_rationale>
+		</variant>
+
+		<!-- Multiplication -->
+		<variant>
+			<variables>
+				int num_a = 3 + random.Next (5);
+				int num_b = (30 + random.Next (20)) * num_a;
+				int rslt = num_b / num_a;
+			</variables>
+			<_question>What number multiplied by [num_a] equals [num_b]?</_question>
+			<string _text = "x * [num_a] = [num_b]" x = "0.5" y = "0.4" centered = "yes" size = "large"/>
+			<answer>[rslt]</answer>
+			<_rationale>It is the result of the operation [num_b] / [num_a].</_rationale>
+		</variant>
+
+		<!-- Division -->
+		<variant>
+			<variables>
+				int num_a = 3 + random.Next (5);
+				int num_b = 3 + random.Next (5);
+				int rslt = num_a * num_b;
+			</variables>
+			<_question>What number divided by [num_a] equals [num_b]?</_question>
+			<string _text = "x / [num_a] = [num_b]" x = "0.5" y = "0.4" centered = "yes" size = "large"/>
+			<answer>[rslt]</answer>
+			<_rationale>It is the result of the operation [num_a] * [num_b].</_rationale>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Boxes</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<variant>
+			<svg file = "box.svg" x = "0.1" y = "0.1" width = "0.6" height = "0.5"/>
+			<string _text = "Container" x = "0.4" y = "0.62" centered = "yes" />
+			<svg file = "box.svg" x = "0.75" y = "0.2" width = "0.1" height = "0.1"/>
+			<string _text = "Box" x = "0.8" y = "0.32" centered = "yes" />
+			<variables>
+				double z = 4 + random.Next (5);
+				double big_box = 6 * 5 * z;
+				double small_box = 1 * 1 * 0.5;
+				double rslt = big_box / small_box;
+			</variables>
+			<!-- Translators: 0.5 should be formatted correctly to your locale, using "," for example instead of "." if this is the convention for your language. -->
+			<_question>How many boxes measuring 1 x 1 x 0.5 can be fit into a container measuring 6 x 5 x [z]?</_question>
+			<answer>[rslt]</answer>
+			<_rationale>You can fit 6 * 5 * [z] * 2 boxes.</_rationale>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Palindromic years</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<variant>
+			<variables>
+				int [] years_start = new int [] {1991, 2992, 3993};
+				int [] years_end = new int [] {2002, 3003, 4004};
+				int idx = random.Next (years_start.Length - 1);
+				int year_start = years_start [idx];
+				int year_end = years_end [idx];
+				int rslt_a = years_start [idx + 1];
+				int rslt_b = years_end [idx + 1];
+			</variables>
+			<_question>[year_start] is a palindromic year as [year_end] is, a gap of 11 years. What are the next two consecutive palindromic years after [year_end] with the same gap? Answer using two numbers (e.g.: [year_start] and [year_end]).</_question>
+			<_tip>A palindromic number remains the same when its digits are reversed (e.g.: 2112).</_tip>
+			<answer>[rslt_a] | [rslt_b]</answer>
+			<_answer_show>[rslt_a] and [rslt_b]</_answer_show>
+			<answer_expression>[0-9]+</answer_expression>
+			<answer_checkattributes>MatchAll</answer_checkattributes>
+			<_rationale>From year 1000 to year 10000, palindrome years occur at 110 year intervals except for the end of each millennium that occur at a 11 years interval.</_rationale>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Dartboard</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<variant>
+			<!--
+				* The array 'numbers' always contains 1 number that is not needed to accomplish the game
+				* There is a single combination that can solve the problem
+				* There are always 2 numbers that have to be repeated
+			-->
+			<variables>
+			int [] numbers = new int []
+			{
+				2, 20, 39, 10,
+				6, 30, 39, 11,
+				31, 12, 34, 8,
+				18, 20, 2, 31,
+				4, 14, 26, 27,
+				26, 7, 20, 27,
+			};
+
+			int [] ans = new int []
+			{
+				2, 20, 20, 39, 39,
+				6, 6, 30, 39, 39,
+				31, 31, 12, 12, 34,
+				18, 20, 20, 31, 31,
+				14, 26, 26, 27, 27,
+				26, 20, 20, 27, 27,
+			};
+
+			int idx = random.Next (6);
+			int value_a = numbers [4 * idx + 0];
+			int value_b = numbers [4 * idx + 1];
+			int value_c = numbers [4 * idx + 2];
+			int value_d = numbers [4 * idx + 3];
+
+			int answer_a = ans [5 * idx + 0];
+			int answer_b = ans [5 * idx + 1];
+			int answer_c = ans [5 * idx + 2];
+			int answer_d = ans [5 * idx + 3];
+			int answer_e = ans [5 * idx + 4];
+			</variables>
+			<_question>On the dartboard below, where would you need to throw the darts to add 120 points in 5 throws? Answer using a list of numbers (e.g.: 4, 5, 6, 3, 2)</_question>
+			<svg file = "dartboard.svg" x = "0.1" y = "0.1" width = "0.8" height = "0.8"/>
+
+			<string text = "[value_a]" x = "0.35" y = "0.35" size = "x-large"/>
+			<string text = "[value_b]" x = "0.54" y = "0.35" size = "x-large"/>
+			<string text = "[value_c]" x = "0.35" y = "0.55" size = "x-large"/>
+			<string text = "[value_d]" x = "0.54" y = "0.55" size = "x-large"/>
+
+			<_tip>Only 3 of the 4 numbers in the dartboard are used to add 120 points.</_tip>
+			<answer_show>[answer_a], [answer_b], [answer_c], [answer_d], [answer_e]</answer_show>
+			<answer>[answer_a] | [answer_b] | [answer_c] | [answer_d] | [answer_e]</answer>
+			<answer_expression>[0-9]+</answer_expression>
+			<answer_checkattributes>MatchAll</answer_checkattributes>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Horse race</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<variant>
+			<svg file = "horses_men.svg" x = "0.2" y = "0.2" width = "0.6" height = "0.6"/>
+			<variables>
+				int men = 10 + random.Next (40);
+				int horses = 10 + random.Next (40);
+				int legs = 2 * men + horses * 4;
+				int eyes = (men + horses) * 2;
+			</variables>
+			<_question>In a horse race there are people and horses. You count [eyes] eye and [legs] leg. How many horses are present?</_question>
+			<question plural ="[eyes]">In a horse race there are people and horses. You count [eyes] eyes and [legs] legs. How many horses are present?</question>
+			<answer>[horses]</answer>
+			<_rationale>Every person has two legs and every horse four (2 * [men] + [horses] * 4). Every person and every horse have also two eyes (2 * [men] + 2 * [horses]).</_rationale>
+		</variant>
+	</game>
+        <game>
+		<_name>Lever</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<_question>How much weight is needed at the point indicated by the question mark to balance the lever?</_question>
+		<_tip>Consider the sentence attributed to Archimedes: 'Give me a lever long enough and a place to stand and I can move the Earth'.</_tip>
+		<_rationale>A lever is in equilibrium when the objects placed on it are at a distances reciprocally proportional to their weights.</_rationale>
+		<svg file = "lever.svg" x = "0.1" y = "0.1" width = "0.8" height = "0.8"/>
+		<variant>
+			<variables>
+			int right_pos = 2;
+			int left_pos = 4;
+			int left_weight = 2 + random.Next (8) * 2;
+			int force = left_pos * left_weight;
+			int right_weight = force / right_pos;
+			</variables>
+			<string text = "?" x = "0.66" y = "0.4" centered = "yes" size = "large"/>
+			<string text = "[left_weight]" x = "0.18" y = "0.4" centered = "yes" size = "large"/>
+			<answer>[right_weight]</answer>
+		</variant>
+
+		<variant>
+			<variables>
+			int right_pos = 1;
+			int left_pos = 4;
+			int left_weight = 2 + random.Next (8) * 2;
+			int force = left_pos * left_weight;
+			int right_weight =  force / right_pos;
+			</variables>
+			<string text = "?" x = "0.58" y = "0.4" centered = "yes" size = "large"/>
+			<string text = "[left_weight]" x = "0.18" y = "0.4" centered = "yes" size = "large"/>
+			<answer>[right_weight]</answer>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Multiple number</_name>
+		<type>Calculation</type>
+		<difficulty>All</difficulty>
+		<answer_checkattributes>MultiOption | IgnoreSpaces</answer_checkattributes>
+		<variant>
+			<variables>
+				int [] indexes_a = new int [] {2, 4, 8};
+				int [] indexes_b = new int [] {3, 9, 15};
+				int index_a = random.Next (3);
+				int index_b = random.Next (3);
+				int num_x = indexes_a [index_a];
+				int num_y = indexes_b [index_b];
+				int option_a = num_x * num_y * indexes_b [index_b]; // valid
+				int option_b = num_y * num_x * indexes_a [index_a]; // valid
+				int option_c = num_y * 3;
+				int option_d = num_x * 4;
+				int product = num_x * num_y;
+			</variables>
+			<_question>Which two numbers of the list below are both multiple of [num_x] and [num_y]? [option_answers]</_question>
+			<_tip>A multiple is a number that may be divided by another number with no remainder. For example, 10, 15 and 25 are multiples of 5.</_tip>
+
+			<string _text = "Choose one of the following:" x = "0.1" y = "0.15" size = "large"/>
+
+			<option x = "0.3" y = "0.3" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] [option_a] and [option_c]" x = "0.05" y = "0.02"  size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.4" width ="0.45" height ="0.1" order ="randomized" correct = "yes">
+				<string _text = "[option_prefix] [option_a] and [option_b]" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.5" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] [option_b] and [option_c]" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.6" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] [option_c] and [option_d]" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+			<!-- Since this a multioption the answer string is set to option | this string, what makes answer_show is not useful here -->
+			<_answer>[option_a] and [option_b]</_answer>
+			<_rationale>[option_a] and [option_b] are both multiples of [num_x] and [num_y].</_rationale>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Cars in town</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<answer_checkattributes>MultiOption | IgnoreSpaces</answer_checkattributes>
+		<variant>
+			<variables>
+				double all_cars =  40 + random.Next (4) * 10;
+				double males_cars = 10 + random.Next (3) * 10;
+				double females_cars = all_cars - males_cars;
+				double option_a = females_cars  / all_cars * 100;
+				double option_b = females_cars + ((2 + random.Next (3)) * 5);
+				double option_c = (all_cars - males_cars);
+				double option_d = (all_cars - males_cars) + 1 + random.Next (10);
+			</variables>
+			<_question>In a small town, [all_cars]% of the inhabitants have a car and [males_cars]% have a car and are males. What percentage of the population are females and have a car? [option_answers]</_question>
+
+			<string _text = "Choose one of the following:" x = "0.1" y = "0.15" size = "large"/>
+
+			<option x = "0.3" y = "0.3" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] [option_a]%" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.4" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] [option_b]%" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.5" width ="0.45" height ="0.1" order ="randomized" correct = "yes">
+				<string _text = "[option_prefix] [option_c]%" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.6" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] [option_d]%" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<answer>[option_c]%</answer>
+			<_rationale>[females_cars]% ([all_cars] - [males_cars]) of the inhabitants are women and have a car.</_rationale>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Compare variables</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<answer_checkattributes>MultiOption | IgnoreSpaces</answer_checkattributes>
+
+		<variant>
+			<_question>If p &lt; x &lt; q and r &lt; y &lt; s and you know that x &lt; y is true, which of the following options is correct? [option_answers]</_question>
+
+			<string _text = "Choose one of the following:" x = "0.1" y = "0.15" size = "large"/>
+
+			<option x = "0.3" y = "0.3" width ="0.45" height ="0.1" order ="randomized" correct = "yes">
+				<string _text = "[option_prefix] s &gt; p" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.4" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] p &lt; r" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.5" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] p &gt; r" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.6" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] q = s" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<_rationale>If x &lt; y, then p &lt; x &lt; y &lt; s so s &gt; p is true.</_rationale>
+			<answer>s &gt; p</answer>
+		</variant>
+
+		<variant>
+			<_question>If p &lt; x &lt; q and r &lt; y &lt; s and you know that x &gt; y is true, which of the following options is correct? [option_answers]</_question>
+
+			<string _text = "Choose one of the following:" x = "0.1" y = "0.15" size = "large"/>
+
+			<option x = "0.3" y = "0.3" width ="0.45" height ="0.1" order ="randomized" correct = "yes">
+				<string _text = "[option_prefix] r &lt; q" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.4" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] p &lt; r" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.5" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] p &gt; r" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.6" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] q = s" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<_rationale>If x &gt; y, then r &lt; y &lt; x &lt; q, so r &lt; q is true.</_rationale>
+			<answer>r &lt; q</answer>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Odd number</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<answer_checkattributes>MultiOption | IgnoreSpaces</answer_checkattributes>
+
+		<variant>
+			<_question>Given two integer numbers x and y, if x is even and y odd, which of the following expressions gives always an odd result? [option_answers]</_question>
+
+			<string _text = "Choose one of the following:" x = "0.1" y = "0.15" size = "large"/>
+
+			<option x = "0.3" y = "0.3" width ="0.45" height ="0.1" order ="randomized" correct = "yes">
+				<string _text = "[option_prefix] 2x + y" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.4" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] x * y" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.5" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] x * y * 2" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.6" width ="0.45" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] (x - y) * 2" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<_rationale>Multiplication of two even numbers always produces an even number, so x multiplied by 2 is even. Adding an odd number (y) to that even number always produces an odd number.</_rationale>
+			<answer>2x + y</answer>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Warehouse</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<answer_checkattributes>MultiOption | IgnoreSpaces</answer_checkattributes>
+
+		<variant>
+			<variables>
+				// These numbers produce always an integer as result
+				int [] time = new int [] {30, 12, 42, 24, 36, 48, 18};
+				int index = random.Next (7);
+
+				double friend = time[index];
+				double john_time = time[index] * 2;
+
+				double john_speed = 1 / john_time;
+				double friend_speed = 1 / friend;
+				double answer_a = 1 / (john_speed + friend_speed);
+				double answer_b = 1 / (2 * john_speed + friend_speed);
+				double answer_c = 1 / (john_speed + friend_speed * 2);
+				double answer_d = (0.90 / (john_speed + friend_speed));
+			</variables>
+
+			<question>John needs [john_time] hour to clean a warehouse and his friend needs half as many. How many hours would it take them to clean up the warehouse if they worked together? [option_answers]</question>
+			<question plural ="[john_time]">John needs [john_time] hours to clean a warehouse and his friend needs half as many. How many hours would it take them to clean up the warehouse if they worked together? [option_answers]</question>
+		</variant>
+
+		<variant>
+			<variables>
+				// These numbers produce always an integer as result
+				int [] time = new int [] {30, 12, 42, 24, 36, 48, 18};
+				int index = random.Next (7);
+
+				double john_time = time[index];
+				double friend = time[index] * 2;
+				double john_speed = 1 / john_time;
+				double friend_speed = 1 / friend;
+				double answer_a = 1 / (john_speed + friend_speed);
+				double answer_b = 1 / (2 * john_speed + friend_speed);
+				double answer_c = 1 / (john_speed + friend_speed * 2);
+				double answer_d = (0.90 / (john_speed + friend_speed));
+			</variables>
+
+			<question>John needs [john_time] hour to clean a warehouse and his friend needs twice as many. How many hours would it take them to clean up the warehouse if they worked together? [option_answers]</question>
+			<question plural ="[john_time]">John needs [john_time] hours to clean a warehouse and his friend needs twice as many. How many hours would it take them to clean up the warehouse if they worked together? [option_answers]</question>
+		</variant>
+
+		<string _text = "Choose one of the following:" x = "0.1" y = "0.15" size = "large"/>
+
+		<option x = "0.3" y = "0.3" width ="0.45" height ="0.1" order ="randomized" correct = "yes">
+			<string text = "[option_prefix] [answer_a]" x = "0.05" y = "0.02" size = "large"/>
+		</option>
+
+		<option x = "0.3" y = "0.4" width ="0.45" height ="0.1" order ="randomized">
+			<string text = "[option_prefix] [answer_b]" x = "0.05" y = "0.02" size = "large"/>
+		</option>
+
+		<option x = "0.3" y = "0.5" width ="0.45" height ="0.1" order ="randomized">
+			<string text = "[option_prefix] [answer_c]" x = "0.05" y = "0.02" size = "large"/>
+		</option>
+
+		<option x = "0.3" y = "0.6" width ="0.45" height ="0.1" order ="randomized">
+			<string text = "[option_prefix] [answer_d]" x = "0.05" y = "0.02" size = "large"/>
+		</option>
+
+		<rationale>John cleans at the speed of 1 / [john_time] per hour and his friend at 1 / [friend]. Together they will need [answer_a] hour.</rationale>
+		<rationale plural ="[answer_a]">John cleans at the speed of 1 / [john_time] per hour and his friend at 1 / [friend]. Together they will need [answer_a] hours.</rationale>
+		<answer>[answer_a]</answer>
+	</game>
+
+	<game>
+		<_name>Two trucks</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<answer_checkattributes>MultiOption | IgnoreSpaces</answer_checkattributes>
+		<variables>
+				// num + (num / 2) - 15 = add
+				int [] nums = new int [] {50, 70, 110, 130, 150, 210, 290, 310};
+				int [] adds = new int [] {60, 90, 150, 180, 210, 300, 420, 450};
+				int index = random.Next (nums.Length);
+				int add = adds [index];
+				int heavier = nums [index];
+				int lighter = (nums [index] / 2) - 15;
+				int answer_a = lighter;
+				int answer_b = lighter + 2 * (2 + random.Next (20));
+				int answer_c = lighter + 2 * (2 + random.Next (10));
+				int answer_d = lighter - 2 * (2 + random.Next (3));
+		</variables>
+		<_question>You have two trucks that have a total weight of [add] unit. If the lighter truck weights 15 units less that half of the weight of the heavier truck, what is the weight of the lighter truck? [option_answers]</_question>
+		<question plural ="[add]">You have two trucks that have a total weight of [add] units. If the lighter truck weights 15 units less that half of the weight of the heavier truck, what is the weight of the lighter truck? [option_answers]</question>
+
+		<string _text = "Choose one of the following:" x = "0.1" y = "0.15" size = "large"/>
+
+		<option x = "0.3" y = "0.3" width ="0.45" height ="0.1" order ="randomized" correct = "yes">
+			<string text = "[option_prefix] [answer_a]" x = "0.05" y = "0.02" size = "large"/>
+		</option>
+
+		<option x = "0.3" y = "0.4" width ="0.45" height ="0.1" order ="randomized">
+			<string text = "[option_prefix] [answer_b]" x = "0.05" y = "0.02" size = "large"/>
+		</option>
+
+		<option x = "0.3" y = "0.5" width ="0.45" height ="0.1" order ="randomized">
+			<string text = "[option_prefix] [answer_c]" x = "0.05" y = "0.02" size = "large"/>
+		</option>
+
+		<option x = "0.3" y = "0.6" width ="0.45" height ="0.1" order ="randomized">
+			<string text = "[option_prefix] [answer_d]" x = "0.05" y = "0.02" size = "large"/>
+		</option>
+		<_rationale>The heavier truck weights [heavier] and the lighter [lighter].</_rationale>
+		<answer>[answer_a]</answer>
+	</game>
+
+	<game>
+		<_name>Family relations</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<answer_checkattributes>MultiOption | IgnoreSpaces</answer_checkattributes>
+		<variant>
+			<_question>John's father's sister's sister-in-law is also? Do not assume that John has any relative that has not been mentioned. [option_answers]</_question>
+
+			<string _text = "Choose one of the following:" x = "0.1" y = "0.15" size = "large"/>
+
+			<option x = "0.1" y = "0.30" width ="0.8" height ="0.1" order ="randomized" correct = "yes">
+				<string _text = "[option_prefix] His mother" x = "0.05" y = "0.02" size = "medium"/>
+			</option>
+
+			<option x = "0.1" y = "0.45" width ="0.8" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] Has no relation" x = "0.05" y = "0.02" size = "medium"/>
+			</option>
+
+			<option x = "0.1" y = "0.60" width ="0.8" height ="0.1" order ="randomized">
+				<_string msgctxt="John's father's sister's sister-in-law is also?" x = "0.05" y = "0.02" size = "medium">[option_prefix] His cousin</_string>
+			</option>
+
+			<option x = "0.1" y = "0.75" width ="0.8" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] His son-in-law" x = "0.05" y = "0.02" size = "medium"/>
+			</option>
+			<_answer>His mother</_answer>
+			<_rationale>The sister's sister-in-law is John's father's wife, that is, John's mother.</_rationale>
+		</variant>
+
+		<variant>
+			<_question>John's mother's brother's brother-in-law is also? Do not assume that John has any relative that has not been mentioned. [option_answers]</_question>
+
+			<string _text = "Choose one of the following:" x = "0.1" y = "0.15" size = "large"/>
+
+			<option x = "0.25" y = "0.3" width ="0.6" height ="0.1" order ="randomized" correct = "yes">
+				<string _text = "[option_prefix] His father" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.25" y = "0.4" width ="0.6" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] Has no relation" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.25" y = "0.5" width ="0.6" height ="0.1" order ="randomized">
+				<_string msgctxt="John's mother's brother's brother-in-law is also?" x = "0.05" y = "0.02" size = "large">[option_prefix] His cousin</_string>
+			</option>
+
+			<option x = "0.25" y = "0.6" width ="0.6" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] His son-in-law" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+			<_answer>His father</_answer>
+			<_rationale>The brother's brother-in-law is John's mother's husband, that is, John's father.</_rationale>
+		</variant>
+	</game>
+
+	<game>
+		<_name>Third number</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<answer_checkattributes>MultiOption | IgnoreSpaces</answer_checkattributes>
+
+		<variables>
+				int [] x = new int [] {32, 51, 59, 35, 24};
+				int [] y = new int [] {18, 27, 21, 23, 28};
+				int [] z = new int [] {37, 27, 55, 38, 11};
+
+				int index = random.Next (x.Length);
+				int three = (x [index] + y [index] + z [index]) / 3;
+				int two = (x [index] + y [index]) / 2;
+				int good_z = z [index];
+
+				int answer_a = good_z;
+				int answer_b = good_z + 2 + random.Next (10);
+				int answer_c = answer_b + 2 + random.Next (5); // Based on answer_b to avoid duplicated answers
+				int answer_d = good_z - 2 - random.Next (10);
+		</variables>
+
+		<variant>
+			<_question>The average of three numbers is [three]. The average of two of these numbers is [two]. What is the third number? [option_answers]</_question>
+
+			<string _text = "Choose one of the following:" x = "0.1" y = "0.15" size = "large"/>
+
+			<option x = "0.3" y = "0.3" width ="0.45" height ="0.1" order ="randomized" correct = "yes">
+				<string text = "[option_prefix] [answer_a]"  x = "0.05"  y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.4" width ="0.45" height ="0.1" order ="randomized">
+				<string text = "[option_prefix] [answer_b]" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.5" width ="0.45" height ="0.1" order ="randomized">
+				<string text = "[option_prefix] [answer_c]" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.6" width ="0.45" height ="0.1" order ="randomized">
+				<string text = "[option_prefix] [answer_d]" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<_rationale>It is the result of the operation: ([three] * 3) - ([two] * 2).</_rationale>
+			<answer>[answer_a]</answer>
+		</variant>
+	</game>
+
+    <game>
+		<_name>Birthday</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<answer_checkattributes>MultiOption | IgnoreSpaces</answer_checkattributes>
+		<_question>A girl once said: 2 days ago I was 18 years old. Next year I will be 21 years old. Can this be true? [option_answers]</_question>
+		<string _text = "Choose one of the following:" x = "0.1" y = "0.15" size = "large"/>
+
+		<option x = "0.3" y = "0.3" width ="0.25" height ="0.1" order ="randomized" correct = "yes">
+			<string _text = "[option_prefix] Yes" x = "0.05" y = "0.02" size = "large"/>
+		</option>
+
+		<option x = "0.3" y = "0.4" width ="0.25" height ="0.1" order ="randomized">
+			<string _text = "[option_prefix] No" x = "0.05" y = "0.02" size = "large"/>
+		</option>
+        <_rationale>She was born 31st of December and she said this on 1st of January.</_rationale>
+		<answer>[answer_a]</answer>
+	</game>
+
+	<game>
+		<_name>Direction</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<answer_checkattributes>MultiOption | IgnoreSpaces</answer_checkattributes>
+		<_question>I go south on an evening when the sun shines. To which side of me will my shadow fall? [option_answers]</_question>
+		<string _text = "Choose one of the following:" x = "0.1" y = "0.15" size = "large"/>
+
+			<option x = "0.1" y = "0.3" width ="0.65" height ="0.1" order ="randomized" correct = "yes">
+				<string _text = "[option_prefix] To my left"  x = "0.1"  y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.1" y = "0.4" width ="0.65" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] To my right" x = "0.1" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.1" y = "0.5" width ="0.65" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] Behind me" x = "0.1" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.1" y = "0.6" width ="0.65" height ="0.1" order ="randomized">
+				<string _text = "[option_prefix] In front of me" x = "0.1" y = "0.02" size = "large"/>
+			</option>
+        <_rationale>If I go south then east is to my left and in the evening the shadow falls east.</_rationale>
+		<answer>To my left</answer>
+	</game>
+
+	<game>
+		<_name>Two men</_name>
+		<type>Logic</type>
+		<difficulty>All</difficulty>
+		<answer_checkattributes>MultiOption | IgnoreSpaces</answer_checkattributes>
+		<variables>
+				int [] dists_a = new int [] {3, 8, 12};
+				int [] dists_b = new int [] {4, 6, 9};
+				int [] dists_c = new int [] {10, 20, 30};
+
+				int index = random.Next (dists_a.Length);
+				int dist_a = dists_a[index];
+				int dist_b = dists_b[index];
+
+				int answer_a = dists_c[index];
+				int answer_b = dists_c[index] + 2 + random.Next (10);
+				int answer_c = answer_b + 2 + random.Next (5); // Based on answer_b to avoid duplicated answers
+				int answer_d = dists_c[index] - 2;
+		</variables>
+
+		<!-- Translators: Adapt 'feet' to the right unit of length for your locale. -->
+		<_question>Two men starting at the same point walk in opposite directions for [dist_a] feet. Both turn left and walk another [dist_b] feet. What is the distance between them? [option_answers]</_question>
+
+		<string _text = "Choose one of the following:" x = "0.1" y = "0.15" size = "large"/>
+
+			<option x = "0.3" y = "0.3" width ="0.45" height ="0.1" order ="randomized" correct = "yes">
+				<string text = "[option_prefix] [answer_a]"  x = "0.05"  y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.4" width ="0.45" height ="0.1" order ="randomized">
+				<string text = "[option_prefix] [answer_b]" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.5" width ="0.45" height ="0.1" order ="randomized">
+				<string text = "[option_prefix] [answer_c]" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+
+			<option x = "0.3" y = "0.6" width ="0.45" height ="0.1" order ="randomized">
+				<string text = "[option_prefix] [answer_d]" x = "0.05" y = "0.02" size = "large"/>
+			</option>
+        <_rationale>Using the Pythagorean theorem, the solution is 2 by the square root of ([dist_a]^2 + [dist_b]^2).</_rationale>
+		<answer>[answer_a]</answer>
+	</game>
+
+</games>
