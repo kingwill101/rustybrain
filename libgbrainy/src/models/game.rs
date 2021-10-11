@@ -17,7 +17,7 @@ pub struct Game {
     pub difficulty: String,
     pub variables: Option<String>,
     #[serde(rename = "rationale")]
-    pub rationale: Option<String>,
+    pub rationale: Option<Vec<String>>,
     #[serde(rename = "variant")]
     pub variants: Option<Vec<Variant>>,
     #[serde(rename = "svg")]
@@ -31,7 +31,7 @@ pub struct Game {
 impl Game {
 
     pub fn get_question(&self) -> String{
-        crate::engine::game::grab_game_data(self, None).question.value
+        crate::engine::game::grab_game_data(self, None).question.text.singular
     }
 }
 

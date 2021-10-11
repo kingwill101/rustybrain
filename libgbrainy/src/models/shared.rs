@@ -13,7 +13,7 @@ pub struct Variant {
     pub question: Option<Vec<Question>>,
 
     #[serde(rename = "rationale")]
-    pub rationale: Option<String>,
+    pub rationale: Option<Vec<String>>,
     //
     // #[serde(rename = "_rationale")]
     // pub rationale: Option<String>,
