@@ -199,10 +199,20 @@ impl Default for QuestionType {
 }
 
 #[derive(Default, Clone, )]
-pub struct QuestionObject {
-    pub value: String,
+pub struct TObject {
+    pub singular: String,
     pub plural: String,
+}
+
+#[derive(Default, Clone, )]
+pub struct QuestionObject {
+    pub text: TObject,
     pub question_ype: QuestionType,
+}
+
+#[derive(Default, Clone, )]
+pub struct RationaleObject{
+    pub text: TObject
 }
 
 #[derive(Default, Clone, )]
@@ -213,7 +223,7 @@ pub struct GameData {
     pub variables: String,
     pub image: Image,
     pub question: QuestionObject,
-    pub rationale: String,
+    pub rationale: RationaleObject,
 
 }
 
@@ -227,14 +237,27 @@ impl Display for GameData {
 /// data where in cases where a plural version of a question is needed
 fn process_question(q: &Vec<Question>, question: &mut QuestionObject) {
     if q.len() > 1 {
-        question.value = q.get(0).as_ref()
+        question.text.singular = q.get(0).as_ref()
             .unwrap().string.as_ref().unwrap().to_string();
 
-        question.plural = q.get(1).as_ref()
+        question.text.plural = q.get(1).as_ref()
             .unwrap().plural.as_ref().unwrap().to_string()
     } else {
-        question.value = q.get(0).as_ref()
+        question.text.singular = q.get(0).as_ref()
             .unwrap().string.as_ref().unwrap().to_string()
+    }
+}
+
+fn process_rationale(q: &Vec<String>, question: &mut RationaleObject) {
+    if q.len() > 1 {
+        question.text.singular = q.get(0).as_ref()
+            .unwrap().to_string();
+
+        question.text.plural = q.get(1).as_ref()
+            .unwrap().to_string()
+    } else {
+        question.text.singular = q.get(0).as_ref()
+            .unwrap().to_string();
     }
 }
 
@@ -276,6 +299,8 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
     };
 
     let mut question = QuestionObject { ..Default::default() };
+    let mut rat = RationaleObject { ..Default::default() };
+
 
     if variant.as_ref().is_none() {
         game_data.variables = match game.variables.as_ref() {
@@ -286,12 +311,10 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
         if game.questions.as_ref().is_some() {
             process_question(game.questions.as_ref().unwrap(), &mut question);
         }
-        //rationale
-        game_data.rationale = if game.rationale.as_ref().is_some() {
-            game.rationale.as_ref().unwrap().to_string()
-        } else {
-            String::new()
-        };
+
+        if game.rationale.as_ref().is_some() {
+            process_rationale(game.rationale.as_ref().unwrap(), &mut rat);
+        }
 
         game_data.image = if game.svg.is_some() {
             let mut image = Image::default();
@@ -317,6 +340,10 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
 
         if variant.as_ref().unwrap().question.as_ref().is_some() {
             process_question(variant.as_ref().unwrap().question.as_ref().unwrap(), &mut question);
+        }
+
+        if variant.as_ref().unwrap().rationale.as_ref().is_some() {
+            process_rationale(variant.as_ref().unwrap().rationale.as_ref().unwrap(), &mut rat);
         }
         //rationale
         game_data.rationale = if variant.as_ref().unwrap().rationale.as_ref().is_some() {

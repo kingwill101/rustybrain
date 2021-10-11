@@ -17,7 +17,6 @@ pub struct Engine {
 
 impl Engine {
     pub fn new() -> Engine {
-        colog::init();
         Engine {
             context: Context::new()
         }
