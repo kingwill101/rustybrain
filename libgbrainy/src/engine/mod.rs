@@ -2,15 +2,17 @@ extern crate log;
 
 use std::borrow::BorrowMut;
 
-use boa::Context;
+use boa::{Context};
 use log::{info, warn};
 
 use crate::engine::utils::{clean_var_name, get_variables};
 
 
-mod utils;
+pub mod utils;
 pub mod game;
+
 pub mod manager;
+pub mod context;
 
 pub struct Engine {
     context: Context,
@@ -72,6 +74,34 @@ impl Engine {
 
         replaced
     }
+
+    pub fn set_str_var(&mut self, var: &str, val: &str) -> bool {
+        match self.context.eval(format!(r##"let {} = "{}";"##, var, val)){
+            Ok(_) => {
+                true
+            }
+            Err(_) => {
+                false
+            }
+        }
+    }
+
+    pub fn set_num_var(&mut self, var: &str, val: &str) -> bool {
+        match self.context.eval(format!(r##"let {} = {};"##, var, val)){
+            Ok(_) => {
+                true
+            }
+            Err(_) => {
+                false
+            }
+        }
+    }
+}
+
+impl Default for Engine {
+    fn default() -> Self {
+        Engine::new()
+    }
 }
 
 #[cfg(test)]
@@ -123,5 +153,14 @@ mod tests {
 
         result = engine.interop("My name is [first_name] [last_name] and i am [age] years old");
         assert_eq!(result, "My name is Glenford Williams and i am 10 years old");
+    }
+
+    #[test]
+    fn var_string_set_test(){
+        let mut engine = Engine::new();
+        assert_eq!(engine.set_str_var("option_prefix", "A"), true);
+        let result = engine.interop("[option_prefix]");
+        assert_eq!(result, "A");
+
     }
 }
