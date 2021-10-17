@@ -1,9 +1,5 @@
-use std::borrow::Borrow;
-use std::fmt::{Display, Formatter};
-
 use serde::Deserialize;
 use serde_xml_rs::Deserializer;
-use serde_xml_rs::Error;
 
 use crate::models::game::GameCollection;
 

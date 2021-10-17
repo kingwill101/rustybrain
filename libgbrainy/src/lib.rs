@@ -9,3 +9,9 @@ mod tests {
         assert_eq!(2 + 2, 4);
     }
 }
+
+
+#[no_mangle]
+pub extern "C" fn say_hello(){
+    println!("Hello world");
+}
