@@ -1,0 +1,19 @@
+[package]
+name = "ffi"
+version = "0.1.0"
+edition = "2018"
+build = "build.rs"
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+lazy_static = "1.4.0"
+libgbrainy = { path="../libgbrainy"}
+serde = "1.0.130"
+serde_derive = "1.0.130"
+serde_json = "1.0.68"
+
+[lib]
+crate-type = ["cdylib"]
+
+[build-dependencies]
+cbindgen = "0.20.0"
