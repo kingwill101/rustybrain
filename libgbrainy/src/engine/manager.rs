@@ -13,6 +13,9 @@ impl Manager {
     pub fn available_games(&self) -> &Vec<GameData> {
         return self.games.as_ref();
     }
+    pub fn game_count(&self) -> u32 {
+        self.available_games().len() as u32
+    }
     pub fn new() -> Manager {
         Manager::default()
     }
@@ -23,15 +26,14 @@ impl Manager {
 
     pub fn load_games(&mut self, games: Vec<Game>) {
         for g in games.iter() {
-            let mut game = Default::default();
 
             if g.variants.as_ref().is_some() {
                 for variant in g.variants.as_ref().unwrap() {
-                    game = grab_game_data(g, Some(variant));
+                    let game = grab_game_data(g, Some(variant));
                     self.add_game(game);
                 }
             } else {
-                game = grab_game_data(g, None);
+                let game = grab_game_data(g, None);
                 self.add_game(game);
             }
         }
