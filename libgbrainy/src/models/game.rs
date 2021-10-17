@@ -2,7 +2,7 @@ use serde_derive::{Deserialize, Serialize};
 
 use crate::models::shared::{Question, Svg, Text, Variant};
 
-#[derive(Debug, Serialize, Deserialize, )]
+#[derive(Debug, Serialize, Deserialize)]
 pub struct GameCollection {
     #[serde(rename = "game")]
     pub games: Vec<Game>,
@@ -25,13 +25,15 @@ pub struct Game {
     #[serde(rename = "question")]
     pub questions: Option<Vec<Question>>,
     #[serde(rename = "option")]
-    pub options: Option<Vec<GameOption>>
+    pub options: Option<Vec<GameOption>>,
 }
 
 impl Game {
-
-    pub fn get_question(&self) -> String{
-        crate::engine::game::grab_game_data(self, None).question.text.singular
+    pub fn get_question(&self) -> String {
+        crate::engine::game::grab_game_data(self, None)
+            .question
+            .text
+            .singular
     }
 }
 
@@ -41,16 +43,14 @@ impl Game {
     }
 }
 
-
-#[derive(Debug, Serialize, Deserialize, )]
-pub struct                  GameOption {
+#[derive(Debug, Serialize, Deserialize)]
+pub struct GameOption {
     pub x: f64,
     pub y: f64,
     pub width: f64,
     pub height: f64,
-    pub order:String,
-
+    pub order: String,
+    pub correct: String,
     #[serde(rename = "string")]
-    pub text: Option<Text>
+    pub text: Option<Text>,
 }
-

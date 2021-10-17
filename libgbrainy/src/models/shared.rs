@@ -62,7 +62,7 @@ pub struct Text {
 
     #[serde(rename = "text")]
     pub text:  Option<String>,
-
+    pub size: Option<String>,
     pub x: f64,
     pub y: f64,
     pub centered: Option<String>,
