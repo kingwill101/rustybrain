@@ -2,9 +2,8 @@ extern crate colog;
 extern crate log;
 
 use libgbrainy;
-use libgbrainy::engine::game::GameData;
+
 use libgbrainy::engine::manager::Manager;
-use libgbrainy::models::game::GameCollection;
 
 fn main() {
 
@@ -26,13 +25,10 @@ fn main() {
             let mut game_manager = Manager::new();
 
             game_manager.load_games(data.games);
+            let mut context = libgbrainy::engine::context::GameContext::new(game_manager.random_game().clone());
 
-
-            let mut engine = libgbrainy::engine::Engine::new();
-            let game = game_manager.random_game();
-            engine.parse_variables(game.variables.as_str());
-            println!("{}", game);
-            println!("{}", engine.interop(game.question.text.singular.as_str()));
+            println!("{}", context.get_drawing_objects().len());
+            println!("{}", context.options_possible_answers_interop())
         }
     }
 }
