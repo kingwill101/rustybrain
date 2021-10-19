@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="113.39px" height="113.39px" viewBox="0 0 113.39 113.39" enable-background="new 0 0 113.39 113.39" xml:space="preserve">
+<g>
+	<g>
+		<path fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M33.868,49.888c0,26.92,45.158,26.92,45.158,0"/>
+		<path stroke="#000000" stroke-miterlimit="10" d="M80.596,43.861c-19.471,2.014-23.721-10.486-23.721-10.486
+			s0.671,9.938-24.022,10.455C32.541,14.355,80.283,14.387,80.596,43.861"/>
+		<path fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M47.662,56.32c0,6.084,18.407,6.084,18.407,0"/>
+		<ellipse cx="65.588" cy="47.087" rx="2.529" ry="2.196"/>
+		<ellipse cx="48.527" cy="47.087" rx="2.53" ry="2.196"/>
+		<path stroke="#000000" stroke-miterlimit="10" d="M73.635,74.394c0,0-3.295,11.05-16.77,11.05
+			c-13.474,0-16.877-11.05-16.877-11.05c-7.058,0.833-11.763,15-11.763,15v11.167h28.004h1.009h28.268V89.394
+			C85.506,89.394,80.758,75.227,73.635,74.394z"/>
+	</g>
+	<path stroke="#000000" stroke-miterlimit="10" d="M32.851,56.32"/>
+</g>
+<ellipse stroke="#000000" stroke-miterlimit="10" cx="56.909" cy="20.562" rx="8.159" ry="6.688"/>
+</svg>

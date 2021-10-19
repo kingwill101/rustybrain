@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="113.39px" height="113.39px" viewBox="0 0 113.39 113.39" enable-background="new 0 0 113.39 113.39" xml:space="preserve">
+<g>
+	<g>
+		<path fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M34.126,47.095c0,26.92,45.157,26.92,45.157,0"/>
+		<path stroke="#000000" stroke-miterlimit="10" d="M80.854,41.067L68.229,28.416C63,33.332,57.804,40.52,33.111,41.036
+			C32.799,11.562,80.541,11.594,80.854,41.067"/>
+		<path fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M47.92,53.527c0,6.084,18.407,6.084,18.407,0"/>
+		<ellipse cx="65.846" cy="44.294" rx="2.53" ry="2.196"/>
+		<ellipse cx="48.785" cy="44.294" rx="2.53" ry="2.196"/>
+		<path stroke="#000000" stroke-miterlimit="10" d="M73.894,71.6c0,0-3.296,11.051-16.77,11.051S40.246,71.6,40.246,71.6
+			c-7.058,0.834-11.763,15-11.763,15v11.168h28.004h1.009h28.268V86.6C85.764,86.6,81.016,72.434,73.894,71.6z"/>
+		<ellipse stroke="#000000" stroke-miterlimit="10" cx="44.831" cy="70.574" rx="0.731" ry="0.567"/>
+		<ellipse stroke="#000000" stroke-miterlimit="10" cx="46.314" cy="73.167" rx="0.731" ry="0.567"/>
+		<ellipse stroke="#000000" stroke-miterlimit="10" cx="48.811" cy="75.166" rx="0.731" ry="0.568"/>
+		<ellipse stroke="#000000" stroke-miterlimit="10" cx="51.262" cy="77" rx="0.731" ry="0.567"/>
+		<ellipse stroke="#000000" stroke-miterlimit="10" cx="54.523" cy="78.135" rx="0.731" ry="0.566"/>
+		<ellipse stroke="#000000" stroke-miterlimit="10" cx="67.821" cy="70.787" rx="0.731" ry="0.567"/>
+		<ellipse stroke="#000000" stroke-miterlimit="10" cx="66.339" cy="73.38" rx="0.731" ry="0.567"/>
+		<ellipse stroke="#000000" stroke-miterlimit="10" cx="63.841" cy="75.379" rx="0.731" ry="0.568"/>
+		<ellipse stroke="#000000" stroke-miterlimit="10" cx="61.39" cy="77.213" rx="0.731" ry="0.567"/>
+		<ellipse stroke="#000000" stroke-miterlimit="10" cx="58.129" cy="78.348" rx="0.73" ry="0.566"/>
+	</g>
+	<path stroke="#000000" stroke-miterlimit="10" d="M33.109,53.527"/>
+	<path stroke="#000000" stroke-width="0.75" stroke-miterlimit="10" d="M33.044,50.373c-0.441-3.311,3.739,24.948-5.677,20.858
+		c10.655,3.312,13.518-7.408,13.518-7.408"/>
+	<path stroke="#000000" stroke-width="0.75" stroke-miterlimit="10" d="M80.365,50.373c0.44-3.311-3.739,24.948,5.676,20.858
+		c-10.654,3.312-13.518-7.408-13.518-7.408"/>
+</g>
+</svg>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px"
+	 width="113.39px" height="113.39px" viewBox="0 0 113.39 113.39" enable-background="new 0 0 113.39 113.39" xml:space="preserve">
+<g>
+	<g>
+		<path fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M33.16,47.622c0,26.919,45.157,26.919,45.157,0"/>
+		<path fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M33.16,41.878c0-26.919,45.157-26.919,45.157,0"/>
+		<path fill="none" stroke="#000000" stroke-width="2" stroke-miterlimit="10" d="M46.954,54.054c0,6.084,18.407,6.084,18.407,0"/>
+		<ellipse cx="64.88" cy="44.821" rx="2.53" ry="2.196"/>
+		<ellipse cx="47.819" cy="44.821" rx="2.53" ry="2.196"/>
+		<path stroke="#000000" stroke-miterlimit="10" d="M72.928,72.127l-5.518-0.55c0,0-5.484,2.947-11.672,2.947
+			c-6.724,0-10.449-2.593-10.449-2.593l-6.009,0.195c-7.058,0.833-11.763,15-11.763,15v11.167h28.004h1.009h28.268V87.127
+			C84.798,87.127,80.05,72.96,72.928,72.127z"/>
+		<path fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M53.704,45.049c0,2.926-2.372,5.298-5.298,5.298
+			h-4.107c-2.926,0-5.298-2.372-5.298-5.298l0,0c0-2.927,2.372-5.299,5.298-5.299h4.107C51.332,39.75,53.704,42.122,53.704,45.049
+			L53.704,45.049z"/>
+		<path fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M73.904,45.539c0,2.926-2.372,5.298-5.299,5.298
+			h-4.107c-2.926,0-5.298-2.372-5.298-5.298l0,0c0-2.927,2.372-5.299,5.298-5.299h4.107C71.532,40.24,73.904,42.612,73.904,45.539
+			L73.904,45.539z"/>
+		<path fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" d="M53.704,45.049"/>
+		<line fill="none" stroke="#000000" stroke-width="3" stroke-miterlimit="10" x1="58.659" y1="44.82" x2="53.704" y2="45.049"/>
+	</g>
+	<path stroke="#000000" stroke-miterlimit="10" d="M32.144,54.054"/>
+</g>
+</svg>
