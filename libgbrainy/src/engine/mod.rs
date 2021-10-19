@@ -2,17 +2,16 @@ extern crate log;
 
 use std::borrow::BorrowMut;
 
-use boa::{Context};
+use boa::Context;
 use log::{info, warn};
 
 use crate::engine::utils::{clean_var_name, get_variables};
 
-
-pub mod utils;
 pub mod game;
+pub mod utils;
 
-pub mod manager;
 pub mod context;
+pub mod manager;
 
 pub struct Engine {
     context: Context,
@@ -21,7 +20,7 @@ pub struct Engine {
 impl Engine {
     pub fn new() -> Engine {
         Engine {
-            context: Context::new()
+            context: Context::new(),
         }
     }
 
@@ -47,15 +46,15 @@ impl Engine {
                 if val.is_null_or_undefined() {
                     return None;
                 }
-                Some(String::from(val.to_string(self.context.borrow_mut()).unwrap().as_str()))
+                Some(String::from(
+                    val.to_string(self.context.borrow_mut()).unwrap().as_str(),
+                ))
             }
             Err(_) => None,
         }
     }
 
     pub fn interop(&mut self, content: &str) -> String {
-
-        //TODO handle [option_answers]
         let mut replaced = String::from(content);
         let mut variable_name: String;
         for v in get_variables(content).iter() {
@@ -68,7 +67,7 @@ impl Engine {
                 warn!("variable {} was not found", v);
                 continue;
             }
-            info!("updating {} with  {}", v,result.as_ref().unwrap().as_str());
+            info!("updating {} with  {}", v, result.as_ref().unwrap().as_str());
             replaced = replaced.replace(v, result.as_ref().unwrap().as_str());
         }
 
@@ -76,24 +75,33 @@ impl Engine {
     }
 
     pub fn set_str_var(&mut self, var: &str, val: &str) -> bool {
-        match self.context.eval(format!(r##"let {} = "{}";"##, var, val)){
-            Ok(_) => {
-                true
-            }
-            Err(_) => {
+        let statement = format!(
+        "
+        try{{
+            {variable} = \"{value}\";
+        }}catch(e){{
+            var {variable} = \"{value}\";
+        }}
+        ",
+            variable = var,
+            value = val
+        );
+
+        log::trace!("{}", statement);
+
+        match self.context.eval(statement) {
+            Ok(_) => true,
+            Err(err) => {
+                log::error!("{}", err.display());
                 false
             }
         }
     }
 
     pub fn set_num_var(&mut self, var: &str, val: &str) -> bool {
-        match self.context.eval(format!(r##"let {} = {};"##, var, val)){
-            Ok(_) => {
-                true
-            }
-            Err(_) => {
-                false
-            }
+        match self.context.eval(format!(r##"let {} = {};"##, var, val)) {
+            Ok(_) => true,
+            Err(_) => false,
         }
     }
 }
@@ -143,11 +151,13 @@ mod tests {
     #[test]
     fn interop_test() {
         let mut engine = Engine::new();
-        engine.parse_variables(r##"
+        engine.parse_variables(
+            r##"
         let age= 10;
         let first_name = "Glenford";
         let last_name = "Williams"
-        "##);
+        "##,
+        );
         let mut result = engine.interop("[age]");
         assert_eq!(result, "10");
 
@@ -156,11 +166,10 @@ mod tests {
     }
 
     #[test]
-    fn var_string_set_test(){
+    fn var_string_set_test() {
         let mut engine = Engine::new();
         assert_eq!(engine.set_str_var("option_prefix", "A"), true);
         let result = engine.interop("[option_prefix]");
         assert_eq!(result, "A");
-
     }
 }
