@@ -1,8 +1,19 @@
 extern crate serde;
 extern crate serde_json;
 
+use std::borrow::Borrow;
 use crate::engine::Engine;
-use crate::engine::game::{GameData, GameObject};
+use crate::engine::game::{GameData, GameObject, Image};
+
+
+fn make_context(game: GameData) ->GameContext {
+    let engine = Engine::new();
+    let mut context = GameContext { engine, game };
+    context.engine.parse_variables(&context.game.variables);
+    let possible_answers = context.options_possible_answers_interop();
+    context.engine.set_str_var("option_answers", possible_answers.as_str());
+    context
+}
 
 pub struct GameContext {
     engine: crate::engine::Engine,
@@ -14,12 +25,15 @@ impl GameContext {
     const OPTION_PREFIX: &'static str = "option_prefix";
 
     pub fn new(game: GameData) -> GameContext {
-        let mut engine = Engine::new();
-        engine.parse_variables(&game.variables);
+        make_context(game)
+    }
 
-        engine.find_var(&game.answer.to_owned().text.as_str());
+    pub fn get_name(&mut self) -> String {
+        self.game.name.clone()
+    }
 
-        GameContext { engine, game }
+    pub fn get_image(&self) -> Image{
+        self.game.image.clone()
     }
 
     pub fn get_question(&mut self) -> String {
@@ -32,8 +46,18 @@ impl GameContext {
                 .as_str(),
         )
     }
+    pub fn get_rationale(&mut self) -> String {
+        self.engine.interop(
+            crate::engine::utils::pluralize(
+                self.game.rationale.text.singular.as_str(),
+                self.game.rationale.text.plural.as_str(),
+                1,
+            )
+                .as_str(),
+        )
+    }
 
-    pub fn get_drawing_objects(&mut self) -> Vec<GameObject> {
+    pub fn get_drawing_objects(&self) -> Vec<GameObject> {
         println!("{} objects found", self.game.objects.len());
         self.game.objects.clone()
     }
@@ -63,40 +87,58 @@ impl GameContext {
         false
     }
 
-    pub fn replace_option_answer_prefix(&mut self, index: u8, content: &str) -> String {
+    pub fn get_options_count(&mut self) -> u32{
+        let mut count = 0;
+        for obj in self.game.objects.iter(){
+            if obj.is_option{
+                count+= 1;
+            }
+        }
+        count
+    }
+
+    fn get_char(&mut self, index: u8) -> String {
         let int_var: u8 = 65 + index;
         let char_var: char = int_var as char;
 
-        self.engine.set_str_var(GameContext::OPTION_PREFIX, format!("{}", char_var).as_str());
+        char_var.to_string()
+    }
+
+    pub fn replace_option_answer_prefix(&mut self, index: u8, content: &str) -> String {
+        let char = self.get_char(index);
+        self.engine.set_str_var(GameContext::OPTION_PREFIX, char.as_str());
         self.engine.interop(content)
     }
 
     pub fn options_possible_answers(&mut self) -> String {
-        let parts: Vec<&str> = self.game.answer.text.split(GameContext::SEPARATOR).collect();
         let mut builder = string_builder::Builder::default();
-        let count = parts.len();
+        let count = self.get_options_count();
+
+        let mut get_index_value = | index| {
+          self.get_char(index as u8)
+        };
 
         if count == 1 || count == 2 {
             match count {
-                1 => builder.append(format!("{}", parts[0].trim())),
+                1 => builder.append(format!("{}", get_index_value(0))),
                 2 => {
-                    builder.append(format!("{} or {}", parts[0].trim(), parts[1].trim()));
+                    builder.append(format!("{} or {}", get_index_value(0), get_index_value(1)));
                 }
                 _ => {}
             };
         } else {
             for val in 0..count {
                 if val == (count - 1) {
-                    builder.append(format!(" or {}", parts[val].trim()));
+                    builder.append(format!(" or {}", get_index_value(val)));
                 } else {
                     if val != 0 {
                         if val == count - 2 {
-                            builder.append(format!("{}", parts[val].trim()));
+                            builder.append(format!("{}", get_index_value(val)));
                         } else {
-                            builder.append(format!("{}, ", parts[val].trim()));
+                            builder.append(format!("{}, ", get_index_value(val)));
                         }
                     } else {
-                        builder.append(format!("{}, ", parts[val].trim()));
+                        builder.append(format!("{}, ", get_index_value(val)));
                     }
                 }
             }
@@ -112,10 +154,7 @@ impl GameContext {
 
 impl Default for GameContext {
     fn default() -> Self {
-        GameContext {
-            engine: Engine::new(),
-            game: GameData::default(),
-        }
+        make_context(GameData::default())
     }
 }
 
@@ -123,14 +162,18 @@ impl Default for GameContext {
 pub fn multiple_option_answer_prefix_test() {
     let mut context = GameContext::default();
 
-    let res = context.replace_option_answer_prefix(0, "[option_prefix] a question");
-
-    assert_eq!(res, "A a question");
+    assert_eq!(context.replace_option_answer_prefix(0, "[option_prefix] a question"), "A a question");
+    assert_eq!(context.replace_option_answer_prefix(1, "[option_prefix] a question"), "B a question");
+    assert_eq!(context.replace_option_answer_prefix(2, "[option_prefix] a question"), "C a question");
+    assert_eq!(context.replace_option_answer_prefix(3, "[option_prefix] a question"), "D a question");
 }
 
 #[test]
 pub fn options_possible_answers_test() {
     let mut context = GameContext::default();
+
+    context.game.objects =Default::default();
+
 
     context.game.answer.text = "[a]".parse().unwrap();
     assert_eq!(context.options_possible_answers(), "[a]");

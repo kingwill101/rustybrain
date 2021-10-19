@@ -243,11 +243,11 @@
 			<variables>
 				let years_start = [1991, 2992, 3993];
 				let years_end = [2002, 3003, 4004];
-				let idx = (Math.floor((Math.random() *years_start.length)) - 1);
-				let year_start = years_start [idx];
-				let year_end = years_end [idx];
-				let rslt_a = years_start [idx + 1];
-				let rslt_b = years_end [idx + 1];
+				let idx = Math.floor((Math.random() *years_start.length));
+				let year_start = years_start[idx];
+				let year_end = years_end[idx];
+				let rslt_a = years_start[idx + 1];
+				let rslt_b = years_end[idx + 1];
 			</variables>
 			<question>[year_start] is a palindromic year as [year_end] is, a gap of 11 years. What are the next two consecutive palindromic years after [year_end] with the same gap? Answer using two numbers (e.g.: [year_start] and [year_end]).</question>
 			<tip>A palindromic number remains the same when its digits are reversed (e.g.: 2112).</tip>
@@ -429,7 +429,7 @@
 				let option_a = females_cars  / all_cars * 100;
 				let option_b = females_cars + ((2 + Math.floor((Math.random() *3))) * 5);
 				let option_c = (all_cars - males_cars);
-				let option_d = (all_cars - males_cars) + 1 + (Math.random() *10);
+				let option_d = (all_cars - males_cars) + 1 + Math.floor((Math.random() *10));
 			</variables>
 			<question>In a small town, [all_cars]% of the inhabitants have a car and [males_cars]% have a car and are males. What percentage of the population are females and have a car? [option_answers]</question>
 
