@@ -1,8 +1,11 @@
-use std::fmt::{Display, Formatter};
 extern crate serde;
+
+use std::fmt::{Display, Formatter};
+
+use serde::{Deserialize, Serialize};
+
 use crate::models::game::Game;
 use crate::models::shared::{Question, Variant};
-use serde::{Deserialize, Serialize};
 
 #[derive(Serialize, Deserialize)]
 pub enum GameType {
@@ -192,6 +195,7 @@ impl Default for ObjectOrder {
         ObjectOrder::InOut
     }
 }
+
 #[derive(Default, Clone, Serialize, Deserialize)]
 pub struct TextObject {
     position: Position,
@@ -243,7 +247,7 @@ pub struct GameObject {
     pub order: ObjectOrder,
     pub text: TextObject,
     pub is_option: bool,
-    pub is_correct: bool
+    pub is_correct: bool,
 }
 
 #[derive(Default, Clone, Serialize, Deserialize)]
@@ -470,16 +474,16 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                             ..Default::default()
                         },
                         centered: match opt.centered.as_ref() {
-                            Some(size) => if size == "yes" { true}else{false},
+                            Some(size) => if size == "yes" { true } else { false },
                             None => false,
                         },
                         size: match opt.size.as_ref() {
                             None => ObjectSize::Small,
-                            Some(ss) =>  ObjectSize::from_string(ss)
+                            Some(ss) => ObjectSize::from_string(ss)
                         },
                     },
                     is_option: false,
-                    is_correct: false
+                    is_correct: false,
                 });
             }
         }
@@ -510,10 +514,13 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                         size: ObjectSize::Medium,
                     },
                     is_option: true,
-                    is_correct:   if opt.correct == "yes" { true}else{false}
+                    is_correct: match opt.correct.as_ref() {
+                        Some(size) => if size == "yes" { true } else { false },
+                        None => false,
+                    },
                 });
             }
-        } 
+        }
         game_data.objects = game_objects;
     }
 

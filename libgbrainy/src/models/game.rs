@@ -50,7 +50,7 @@ pub struct GameOption {
     pub width: f64,
     pub height: f64,
     pub order: String,
-    pub correct: String,
+    pub correct: Option<String>,
     #[serde(rename = "string")]
     pub text: Option<Text>,
 }
