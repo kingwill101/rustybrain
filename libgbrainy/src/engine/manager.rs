@@ -2,7 +2,7 @@ use std::fmt::{Display, Formatter};
 
 use rand::{self, Rng};
 
-use crate::engine::game::{GameData, grab_game_data};
+use crate::engine::game::{grab_game_data, GameData};
 use crate::models::game::Game;
 
 pub struct Manager {
@@ -26,7 +26,6 @@ impl Manager {
 
     pub fn load_games(&mut self, games: Vec<Game>) {
         for g in games.iter() {
-
             if g.variants.as_ref().is_some() {
                 for variant in g.variants.as_ref().unwrap() {
                     let game = grab_game_data(g, Some(variant));
@@ -40,23 +39,21 @@ impl Manager {
     }
 
     pub fn random_game(&self) -> &GameData {
-        self.games.get(rand::thread_rng().gen_range(0..self.games.len())).unwrap()
+        self.games
+            .get(rand::thread_rng().gen_range(0..self.games.len()))
+            .unwrap()
     }
 }
 
 impl Display for Manager {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        self.games.iter().for_each(|g| {
-            if g.fmt(f).is_ok(){}
-        });
+        self.games.iter().for_each(|g| if g.fmt(f).is_ok() {});
         write!(f, "")
     }
 }
 
 impl Default for Manager {
     fn default() -> Self {
-        Manager {
-            games: vec![]
-        }
+        Manager { games: vec![] }
     }
 }

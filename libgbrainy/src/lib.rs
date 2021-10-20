@@ -1,6 +1,6 @@
+pub mod engine;
 pub mod models;
 pub mod reader;
-pub mod engine;
 
 #[cfg(test)]
 mod tests {
@@ -10,8 +10,7 @@ mod tests {
     }
 }
 
-
 #[no_mangle]
-pub extern "C" fn say_hello(){
+pub extern "C" fn say_hello() {
     println!("Hello world");
 }

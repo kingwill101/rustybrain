@@ -103,7 +103,6 @@ impl Display for GameDifficulty {
     }
 }
 
-
 impl Default for GameDifficulty {
     fn default() -> Self {
         GameDifficulty::All
@@ -478,7 +477,7 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                         },
                         size: match opt.size.as_ref() {
                             None => ObjectSize::Small,
-                            Some(ss) => ObjectSize::from_string(ss)
+                            Some(ss) => ObjectSize::from_string(ss),
                         },
                     },
                     is_option: false,

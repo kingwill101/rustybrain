@@ -1,3 +1,3 @@
 pub mod analogy;
-pub mod shared;
 pub mod game;
+pub mod shared;

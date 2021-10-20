@@ -1,15 +1,17 @@
 extern crate serde;
 extern crate serde_json;
 
-use crate::engine::Engine;
 use crate::engine::game::{GameData, GameObject, Image};
+use crate::engine::Engine;
 
 fn make_context(game: GameData) -> GameContext {
     let engine = Engine::new();
     let mut context = GameContext { engine, game };
     context.engine.parse_variables(&context.game.variables);
     let possible_answers = context.options_possible_answers_interop();
-    context.engine.set_str_var("option_answers", possible_answers.as_str());
+    context
+        .engine
+        .set_str_var("option_answers", possible_answers.as_str());
     context
 }
 
@@ -41,7 +43,7 @@ impl GameContext {
                 self.game.question.text.plural.as_str(),
                 1,
             )
-                .as_str(),
+            .as_str(),
         )
     }
     pub fn get_rationale(&mut self) -> String {
@@ -51,7 +53,7 @@ impl GameContext {
                 self.game.rationale.text.plural.as_str(),
                 1,
             )
-                .as_str(),
+            .as_str(),
         )
     }
 
@@ -104,7 +106,8 @@ impl GameContext {
 
     pub fn replace_option_answer_prefix(&mut self, index: u8, content: &str) -> String {
         let char = self.get_char(index);
-        self.engine.set_str_var(GameContext::OPTION_PREFIX, char.as_str());
+        self.engine
+            .set_str_var(GameContext::OPTION_PREFIX, char.as_str());
         self.engine.interop(content)
     }
 
@@ -112,9 +115,7 @@ impl GameContext {
         let mut builder = string_builder::Builder::default();
         let count = self.get_options_count();
 
-        let mut get_index_value = |index| {
-            self.get_char(index as u8)
-        };
+        let mut get_index_value = |index| self.get_char(index as u8);
 
         if count == 1 || count == 2 {
             match count {
@@ -158,10 +159,22 @@ impl Default for GameContext {
 pub fn multiple_option_answer_prefix_test() {
     let mut context = GameContext::default();
 
-    assert_eq!(context.replace_option_answer_prefix(0, "[option_prefix] a question"), "A a question");
-    assert_eq!(context.replace_option_answer_prefix(1, "[option_prefix] a question"), "B a question");
-    assert_eq!(context.replace_option_answer_prefix(2, "[option_prefix] a question"), "C a question");
-    assert_eq!(context.replace_option_answer_prefix(3, "[option_prefix] a question"), "D a question");
+    assert_eq!(
+        context.replace_option_answer_prefix(0, "[option_prefix] a question"),
+        "A a question"
+    );
+    assert_eq!(
+        context.replace_option_answer_prefix(1, "[option_prefix] a question"),
+        "B a question"
+    );
+    assert_eq!(
+        context.replace_option_answer_prefix(2, "[option_prefix] a question"),
+        "C a question"
+    );
+    assert_eq!(
+        context.replace_option_answer_prefix(3, "[option_prefix] a question"),
+        "D a question"
+    );
 }
 
 #[test]
@@ -169,7 +182,6 @@ pub fn options_possible_answers_test() {
     let mut context = GameContext::default();
 
     context.game.objects = Default::default();
-
 
     context.game.answer.text = "[a]".parse().unwrap();
     assert_eq!(context.options_possible_answers(), "[a]");
@@ -184,7 +196,10 @@ pub fn options_possible_answers_test() {
     assert_eq!(context.options_possible_answers(), "[a], [b], [c] or [d]");
 
     context.game.answer.text = "[a]|[b]|[c]|[d]|[e]".parse().unwrap();
-    assert_eq!(context.options_possible_answers(), "[a], [b], [c], [d] or [e]");
+    assert_eq!(
+        context.options_possible_answers(),
+        "[a], [b], [c], [d] or [e]"
+    );
 }
 
 #[test]

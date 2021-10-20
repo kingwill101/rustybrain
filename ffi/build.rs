@@ -1,9 +1,8 @@
 extern crate cbindgen;
 
+use cbindgen::Config;
 use std::env;
 use std::path::PathBuf;
-use cbindgen::Config;
-
 
 fn main() {
     let crate_dir = env::var("CARGO_MANIFEST_DIR").unwrap();
@@ -49,12 +48,13 @@ fn main() {
     let res = cbindgen::generate_with_config(&crate_dir, config);
 
     match res {
-        Ok(res) => {res.write_to_file(&output_file);}
-        Err(err) => { println!("{}", err.to_string());}
+        Ok(res) => {
+            res.write_to_file(&output_file);
+        }
+        Err(err) => {
+            println!("{}", err.to_string());
+        }
     };
-
-    
-       
 }
 
 /// Find the location of the `target/` directory. Note that this may be

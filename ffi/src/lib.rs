@@ -22,8 +22,7 @@ lazy_static! {
 pub unsafe extern "C" fn engine_init_game_manager() -> bool {
     let bytes = include_bytes!("../../data/games.xml");
 
-    let collection =
-        libgbrainy::reader::parse_game_data(&*String::from_utf8_lossy(bytes));
+    let collection = libgbrainy::reader::parse_game_data(&*String::from_utf8_lossy(bytes));
 
     return match collection {
         None => {
@@ -55,7 +54,6 @@ pub unsafe extern "C" fn engine_context_new() -> *mut GameContext {
     Box::into_raw(Box::new(game_context))
 }
 
-
 /// # Safety
 ///
 /// Always make sure that GameContext ptr is always valid before passing
@@ -70,7 +68,6 @@ pub unsafe extern "C" fn engine_context_get_question(ptr: *mut GameContext) -> *
     let question_c = CString::new(context.get_question()).unwrap();
     question_c.into_raw()
 }
-
 
 /// # Safety
 ///
@@ -156,7 +153,10 @@ pub unsafe extern "C" fn engine_context_get_possible_answers(ptr: *mut GameConte
 ///
 /// Always make sure that GameContext ptr is always valid before passing
 #[no_mangle]
-pub unsafe extern "C" fn engine_context_check_answer(ptr: *mut GameContext, s: *const c_char) -> bool {
+pub unsafe extern "C" fn engine_context_check_answer(
+    ptr: *mut GameContext,
+    s: *const c_char,
+) -> bool {
     if ptr.is_null() {
         return false;
     }
@@ -178,7 +178,11 @@ pub unsafe extern "C" fn engine_context_check_answer(ptr: *mut GameContext, s: *
 ///
 /// Always make sure that GameContext ptr is always valid before passing
 #[no_mangle]
-pub unsafe extern "C" fn engine_context_get_option_prefix(ptr: *mut GameContext, index: u8, content: *const c_char) -> *mut c_char {
+pub unsafe extern "C" fn engine_context_get_option_prefix(
+    ptr: *mut GameContext,
+    index: u8,
+    content: *const c_char,
+) -> *mut c_char {
     if ptr.is_null() {
         return to_c_str("".to_string());
     }
@@ -207,4 +211,3 @@ pub unsafe extern "C" fn engine_free_string(s: *mut c_char) {
 pub fn to_c_str(s: String) -> *mut c_char {
     CString::new(s).unwrap().into_raw()
 }
-

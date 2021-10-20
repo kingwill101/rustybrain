@@ -76,7 +76,7 @@ impl Engine {
 
     pub fn set_str_var(&mut self, var: &str, val: &str) -> bool {
         let statement = format!(
-        "
+            "
         try{{
             {variable} = \"{value}\";
         }}catch(e){{
@@ -99,7 +99,9 @@ impl Engine {
     }
 
     pub fn set_num_var(&mut self, var: &str, val: &str) -> bool {
-        self.context.eval(format!(r##"let {} = {};"##, var, val)).is_ok()
+        self.context
+            .eval(format!(r##"let {} = {};"##, var, val))
+            .is_ok()
     }
 }
 
