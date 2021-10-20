@@ -1,8 +1,6 @@
 extern crate colog;
 extern crate log;
 
-use libgbrainy;
-
 use libgbrainy::engine::manager::Manager;
 
 fn main() {
@@ -11,15 +9,13 @@ fn main() {
     let bytes = include_bytes!("../../data/games.xml");
 
     let collection = libgbrainy::reader::parse_game_data(
-        Box::from(
-            &*String::from_utf8_lossy(bytes)
-        )
+        &*String::from_utf8_lossy(bytes)
+
     );
 
     match collection {
         None => {
             log::warn!("Parsing error");
-            return
         }
         Some(data) => {
             let mut game_manager = Manager::new();

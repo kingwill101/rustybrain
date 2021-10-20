@@ -99,10 +99,7 @@ impl Engine {
     }
 
     pub fn set_num_var(&mut self, var: &str, val: &str) -> bool {
-        match self.context.eval(format!(r##"let {} = {};"##, var, val)) {
-            Ok(_) => true,
-            Err(_) => false,
-        }
+        self.context.eval(format!(r##"let {} = {};"##, var, val)).is_ok()
     }
 }
 

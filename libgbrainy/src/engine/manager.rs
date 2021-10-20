@@ -11,7 +11,7 @@ pub struct Manager {
 
 impl Manager {
     pub fn available_games(&self) -> &Vec<GameData> {
-        return self.games.as_ref();
+        self.games.as_ref()
     }
     pub fn game_count(&self) -> u32 {
         self.available_games().len() as u32
@@ -47,12 +47,8 @@ impl Manager {
 impl Display for Manager {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         self.games.iter().for_each(|g| {
-            match g.fmt(f) {
-                Ok(_) => {}
-                Err(_) => {}
-            }
+            if g.fmt(f).is_ok(){}
         });
-
         write!(f, "")
     }
 }

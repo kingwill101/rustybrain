@@ -11,10 +11,14 @@ pub fn get_variables(val: &str) -> Vec<String> {
 }
 
 pub fn pluralize(singular: &str, plural: &str, count: i32) -> String {
-
-    if plural.len() < 1 {
-       return  singular.to_string()
+    if plural.is_empty() && singular.is_empty() {
+        return String::new()
+    } else if plural.is_empty() {
+        return singular.to_string();
+    } else if singular.is_empty() {
+        return String::new()
     }
+
     if count == 1 {
         return singular.to_string();
     }

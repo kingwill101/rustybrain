@@ -1,12 +1,10 @@
 extern crate serde;
 extern crate serde_json;
 
-use std::borrow::Borrow;
 use crate::engine::Engine;
 use crate::engine::game::{GameData, GameObject, Image};
 
-
-fn make_context(game: GameData) ->GameContext {
+fn make_context(game: GameData) -> GameContext {
     let engine = Engine::new();
     let mut context = GameContext { engine, game };
     context.engine.parse_variables(&context.game.variables);
@@ -21,7 +19,7 @@ pub struct GameContext {
 }
 
 impl GameContext {
-    const SEPARATOR: &'static str = "|";
+    // const SEPARATOR: &'static str = "|";
     const OPTION_PREFIX: &'static str = "option_prefix";
 
     pub fn new(game: GameData) -> GameContext {
@@ -32,7 +30,7 @@ impl GameContext {
         self.game.name.clone()
     }
 
-    pub fn get_image(&self) -> Image{
+    pub fn get_image(&self) -> Image {
         self.game.image.clone()
     }
 
@@ -80,18 +78,18 @@ impl GameContext {
         }
 
         for right in right_answers.iter() {
-            if right.to_string() == str_answer {
+            if *right == str_answer {
                 return true;
             }
         }
         false
     }
 
-    pub fn get_options_count(&mut self) -> u32{
+    pub fn get_options_count(&mut self) -> u32 {
         let mut count = 0;
-        for obj in self.game.objects.iter(){
-            if obj.is_option{
-                count+= 1;
+        for obj in self.game.objects.iter() {
+            if obj.is_option {
+                count += 1;
             }
         }
         count
@@ -114,13 +112,13 @@ impl GameContext {
         let mut builder = string_builder::Builder::default();
         let count = self.get_options_count();
 
-        let mut get_index_value = | index| {
-          self.get_char(index as u8)
+        let mut get_index_value = |index| {
+            self.get_char(index as u8)
         };
 
         if count == 1 || count == 2 {
             match count {
-                1 => builder.append(format!("{}", get_index_value(0))),
+                1 => builder.append(get_index_value(0)),
                 2 => {
                     builder.append(format!("{} or {}", get_index_value(0), get_index_value(1)));
                 }
@@ -130,16 +128,14 @@ impl GameContext {
             for val in 0..count {
                 if val == (count - 1) {
                     builder.append(format!(" or {}", get_index_value(val)));
-                } else {
-                    if val != 0 {
-                        if val == count - 2 {
-                            builder.append(format!("{}", get_index_value(val)));
-                        } else {
-                            builder.append(format!("{}, ", get_index_value(val)));
-                        }
+                } else if val != 0 {
+                    if val == count - 2 {
+                        builder.append(get_index_value(val));
                     } else {
                         builder.append(format!("{}, ", get_index_value(val)));
                     }
+                } else {
+                    builder.append(format!("{}, ", get_index_value(val)));
                 }
             }
         }
@@ -172,7 +168,7 @@ pub fn multiple_option_answer_prefix_test() {
 pub fn options_possible_answers_test() {
     let mut context = GameContext::default();
 
-    context.game.objects =Default::default();
+    context.game.objects = Default::default();
 
 
     context.game.answer.text = "[a]".parse().unwrap();

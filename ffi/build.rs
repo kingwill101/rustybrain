@@ -47,15 +47,12 @@ fn main() {
     };
 
     let res = cbindgen::generate_with_config(&crate_dir, config);
-    if res.is_ok() {
-        res.unwrap().write_to_file(&output_file);
-    }else{
-        match res.err(){
-            Some(s) => println!("{}", s.to_string()),
-            None => todo!(),
-        }
-    
-    }
+
+    match res {
+        Ok(res) => {res.write_to_file(&output_file);}
+        Err(err) => { println!("{}", err.to_string());}
+    };
+
     
        
 }

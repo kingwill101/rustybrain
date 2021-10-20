@@ -38,14 +38,16 @@ impl GameType {
             _ => GameType::None,
         }
     }
+}
 
-    fn to_string(&self) -> String {
+impl Display for GameType {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            GameType::None => "Unknown".to_string(),
-            GameType::LogicPuzzle => "Logic".to_string(),
-            GameType::Memory => "Memory".to_string(),
-            GameType::Calculation => "Location".to_string(),
-            GameType::VerbalAnalogy => "Verbal".to_string(),
+            GameType::None => write!(f, "Unknown"),
+            GameType::LogicPuzzle => write!(f, "Logic"),
+            GameType::Memory => write!(f, "Memory"),
+            GameType::Calculation => write!(f, "Location"),
+            GameType::VerbalAnalogy => write!(f, "Verbal"),
         }
     }
 }
@@ -87,16 +89,20 @@ impl GameDifficulty {
             _ => GameDifficulty::None,
         }
     }
-    fn to_string(&self) -> String {
+}
+
+impl Display for GameDifficulty {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
         match self {
-            GameDifficulty::None => String::from("Unknown"),
-            GameDifficulty::Easy => String::from("Easy"),
-            GameDifficulty::Medium => String::from("Medium"),
-            GameDifficulty::Master => String::from("Master"),
-            GameDifficulty::All => String::from("All"),
+            GameDifficulty::None => write!(f, "Unknown"),
+            GameDifficulty::Easy => write!(f, "Easy"),
+            GameDifficulty::Medium => write!(f, "Medium"),
+            GameDifficulty::Master => write!(f, "Master"),
+            GameDifficulty::All => write!(f, "All"),
         }
     }
 }
+
 
 impl Default for GameDifficulty {
     fn default() -> Self {
@@ -277,7 +283,7 @@ impl Display for GameData {
 
 /// only 2 questions are supported second question is only used to provide additional
 /// data where in cases where a plural version of a question is needed
-fn process_question(q: &Vec<Question>, question: &mut QuestionObject) {
+fn process_question(q: &[Question], question: &mut QuestionObject) {
     if q.len() > 1 {
         question.text.singular = q
             .get(0)
@@ -308,13 +314,11 @@ fn process_question(q: &Vec<Question>, question: &mut QuestionObject) {
     }
 }
 
-fn process_rationale(q: &Vec<String>, question: &mut RationaleObject) {
-    if q.len() > 1 {
-        question.text.singular = q.get(0).as_ref().unwrap().to_string();
+fn process_rationale(q: &[String], question: &mut RationaleObject) {
+    question.text.singular = q.get(0).as_ref().unwrap().to_string();
 
+    if q.len() > 1 {
         question.text.plural = q.get(1).as_ref().unwrap().to_string()
-    } else {
-        question.text.singular = q.get(0).as_ref().unwrap().to_string();
     }
 }
 
@@ -368,7 +372,7 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
         && variant.as_ref().unwrap().question.is_none()
         && game.questions.is_some()
     {
-        process_question(game.questions.as_ref().unwrap().as_ref(), &mut question);
+        process_question(game.questions.as_ref().unwrap(), &mut question);
     }
 
     if variant.as_ref().is_none() {
@@ -385,18 +389,16 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
             process_rationale(game.rationale.as_ref().unwrap(), &mut rat);
         }
 
-        game_data.image = if game.svg.is_some() {
-            let mut image = Image::default();
-            image.position = Position {
+        game_data.image = Image {
+            position: Position {
                 x: game.svg.as_ref().unwrap().get(0).unwrap().x,
                 y: game.svg.as_ref().unwrap().get(0).unwrap().y,
-            };
-
-            image.dimensions = Dimensions {
+            },
+            dimensions: Dimensions {
                 width: game.svg.as_ref().unwrap().get(0).unwrap().width,
                 height: game.svg.as_ref().unwrap().get(0).unwrap().height,
-            };
-            image.path = game
+            },
+            path: game
                 .svg
                 .as_ref()
                 .unwrap()
@@ -404,11 +406,8 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                 .unwrap()
                 .file
                 .as_str()
-                .to_string();
-            image
-        } else {
-            Image::default()
-        }
+                .to_string(),
+        };
     } else {
         let variant = variant.as_ref().unwrap();
 
@@ -474,7 +473,7 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                             ..Default::default()
                         },
                         centered: match opt.centered.as_ref() {
-                            Some(size) => if size == "yes" { true } else { false },
+                            Some(size) => size == "yes",
                             None => false,
                         },
                         size: match opt.size.as_ref() {
@@ -515,7 +514,7 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                     },
                     is_option: true,
                     is_correct: match opt.correct.as_ref() {
-                        Some(size) => if size == "yes" { true } else { false },
+                        Some(size) => size == "yes",
                         None => false,
                     },
                 });
