@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use crate::models::game::Game;
 use crate::models::shared::{Question, Variant};
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug,Serialize, Deserialize)]
 pub enum GameType {
     None,
     LogicPuzzle,
@@ -29,7 +29,7 @@ impl Clone for GameType {
 }
 
 impl GameType {
-    fn from_string(g_type: &str) -> GameType {
+    pub(crate) fn from_string(g_type: &str) -> GameType {
         match g_type {
             "Logic" => GameType::LogicPuzzle,
             "Memory" => GameType::Memory,
@@ -58,7 +58,7 @@ impl Default for GameType {
     }
 }
 
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum GameDifficulty {
     None,
     Easy,
@@ -80,7 +80,7 @@ impl Clone for GameDifficulty {
 }
 
 impl GameDifficulty {
-    fn from_string(difficulty: &str) -> GameDifficulty {
+    pub fn from_string(difficulty: &str) -> GameDifficulty {
         match difficulty {
             "Easy" => GameDifficulty::Easy,
             "Medium" => GameDifficulty::Medium,
@@ -109,19 +109,19 @@ impl Default for GameDifficulty {
     }
 }
 
-#[derive(Default, Clone, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct Position {
     pub x: f64,
     pub y: f64,
 }
 
-#[derive(Default, Clone, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct Dimensions {
     pub width: f64,
     pub height: f64,
 }
 
-#[derive(Default, Clone, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct Image {
     position: Position,
     dimensions: Dimensions,
@@ -129,7 +129,7 @@ pub struct Image {
 }
 
 #[repr(C)]
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 enum ObjectSize {
     Small,
     Medium,
@@ -170,7 +170,7 @@ impl Default for ObjectSize {
 }
 
 #[repr(C)]
-#[derive(Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum ObjectOrder {
     Randomized,
     InOut,
@@ -201,7 +201,7 @@ impl Default for ObjectOrder {
     }
 }
 
-#[derive(Default, Clone, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct TextObject {
     position: Position,
     text: TObject,
@@ -209,7 +209,7 @@ pub struct TextObject {
     size: ObjectSize,
 }
 
-#[derive(Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub enum QuestionType {
     MultipleOptions,
     PairOfWordsOptions,
@@ -223,29 +223,29 @@ impl Default for QuestionType {
     }
 }
 
-#[derive(Default, Clone, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct TObject {
     pub singular: String,
     pub plural: String,
 }
 
-#[derive(Default, Clone, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct QuestionObject {
     pub text: TObject,
     pub question_ype: QuestionType,
 }
 
-#[derive(Default, Clone, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct RationaleObject {
     pub text: TObject,
 }
 
-#[derive(Default, Clone, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct AnswerObject {
     pub text: String,
 }
 
-#[derive(Default, Clone, Serialize, Deserialize)]
+#[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct GameObject {
     pub position: Position,
     pub dimensions: Dimensions,
@@ -253,15 +253,16 @@ pub struct GameObject {
     pub text: TextObject,
     pub is_option: bool,
     pub is_correct: bool,
+    pub is_image: bool,
+    pub path: String,
 }
 
-#[derive(Default, Clone, Serialize, Deserialize)]
+#[derive(Default,Debug, Clone, Serialize, Deserialize)]
 pub struct GameData {
     pub name: String,
     pub game_type: GameType,
     pub difficulty: GameDifficulty,
     pub variables: String,
-    pub image: Image,
     pub question: QuestionObject,
     pub rationale: RationaleObject,
     pub answer: AnswerObject,
@@ -374,6 +375,9 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
         process_question(game.questions.as_ref().unwrap(), &mut question);
     }
 
+    let mut game_objects: Vec<GameObject> = [].to_vec();
+
+
     if variant.as_ref().is_none() {
         game_data.variables = match game.variables.as_ref() {
             None => "".to_string(),
@@ -388,7 +392,7 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
             process_rationale(game.rationale.as_ref().unwrap(), &mut rat);
         }
 
-        game_data.image = Image {
+        game_objects.push(GameObject {
             position: Position {
                 x: game.svg.as_ref().unwrap().get(0).unwrap().x,
                 y: game.svg.as_ref().unwrap().get(0).unwrap().y,
@@ -406,7 +410,9 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                 .file
                 .as_str()
                 .to_string(),
-        };
+            is_image: true,
+            ..GameObject::default()
+        });
     } else {
         let variant = variant.as_ref().unwrap();
 
@@ -423,24 +429,25 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
         if variant.rationale.as_ref().is_some() {
             process_rationale(variant.rationale.as_ref().unwrap(), &mut rat);
         }
-        game_data.image = if variant.svg.is_some() {
-            let mut image = Image::default();
+
+        if variant.svg.is_some() {
             let svg = variant.svg.as_ref().unwrap();
 
-            image.position = Position {
-                x: svg.get(0).unwrap().x,
-                y: svg.get(0).unwrap().y,
-            };
 
-            image.dimensions = Dimensions {
-                width: svg.get(0).unwrap().width,
-                height: svg.get(0).unwrap().height,
-            };
-            image.path = svg.get(0).unwrap().file.as_str().to_string();
-            image
-        } else {
-            Image::default()
-        };
+            game_objects.push(GameObject {
+                position: Position {
+                    x: svg.get(0).unwrap().x,
+                    y: svg.get(0).unwrap().y,
+                },
+                dimensions: Dimensions {
+                    width: svg.get(0).unwrap().width,
+                    height: svg.get(0).unwrap().height,
+                },
+                path: svg.get(0).unwrap().file.as_str().to_string(),
+                is_image: true,
+                ..GameObject::default()
+            });
+        }
         if variant.answer.is_some() {
             game_data.answer = AnswerObject {
                 text: variant
@@ -454,7 +461,6 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
             }
         }
 
-        let mut game_objects: Vec<GameObject> = [].to_vec();
 
         if variant.text.is_some() {
             for opt in variant.text.as_ref().unwrap().iter() {
@@ -482,6 +488,8 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                     },
                     is_option: false,
                     is_correct: false,
+
+                    ..GameObject::default()
                 });
             }
         }
@@ -516,6 +524,7 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                         Some(size) => size == "yes",
                         None => false,
                     },
+                    ..GameObject::default()
                 });
             }
         }
