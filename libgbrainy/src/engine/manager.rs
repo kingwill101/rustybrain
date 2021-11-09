@@ -1,27 +1,52 @@
+use std::collections::HashMap;
 use std::fmt::{Display, Formatter};
 
 use rand::{self, Rng};
 
-use crate::engine::game::{grab_game_data, GameData};
+use crate::engine::game::{grab_game_data, GameData, GameType};
 use crate::models::game::Game;
 
 pub struct Manager {
-    games: Vec<GameData>,
+    games: HashMap<String, Vec<GameData>>,
 }
 
 impl Manager {
-    pub fn available_games(&self) -> &Vec<GameData> {
-        self.games.as_ref()
+    pub fn available_games(&self) -> &HashMap<String, Vec<GameData>> {
+        &self.games
     }
+
+    pub fn game_category_count(&self, game_type: GameType) -> u32 {
+        let mut count: u32 = 0;
+        if !self.available_games().contains_key(&game_type.to_string()) {
+            return 0;
+        }
+        self.games[&game_type.to_string()].iter().for_each(|_| {
+            count += 1;
+        });
+
+        count
+    }
+
     pub fn game_count(&self) -> u32 {
-        self.available_games().len() as u32
+        let mut count: u32 = 0;
+        for k in self.available_games().keys() {
+            self.available_games()[k].iter().for_each(|_| {
+                count += 1;
+            });
+        }
+        count
     }
+
     pub fn new() -> Manager {
         Manager::default()
     }
 
     fn add_game(&mut self, game: GameData) {
-        self.games.push(game)
+        self.available_games()
+            .to_owned()
+            .entry(game.game_type.to_string())
+            .or_insert_with(|| vec![game.clone()])
+            .push(game);
     }
 
     pub fn load_games(&mut self, games: Vec<Game>) {
@@ -38,22 +63,41 @@ impl Manager {
         }
     }
 
-    pub fn random_game(&self) -> &GameData {
-        self.games
-            .get(rand::thread_rng().gen_range(0..self.games.len()))
+    pub fn random_game(&self) -> GameData {
+        let registry = self
+            .available_games()
+            .get(&GameType::LogicPuzzle.to_string())
             .unwrap()
+            .clone();
+
+        registry
+            .get(rand::thread_rng().gen_range(0..registry.len()))
+            .unwrap()
+            .to_owned()
     }
 }
 
 impl Display for Manager {
     fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
-        self.games.iter().for_each(|g| if g.fmt(f).is_ok() {});
+        self.available_games().keys().for_each(|k| {
+            match writeln!(
+                f,
+                "{}: {} games",
+                k,
+                self.game_category_count(GameType::from_string(k))
+            ) {
+                Ok(_) => todo!(),
+                Err(_) => todo!(),
+            }
+        });
         write!(f, "")
     }
 }
 
 impl Default for Manager {
     fn default() -> Self {
-        Manager { games: vec![] }
+        Manager {
+            games: HashMap::new(),
+        }
     }
 }
