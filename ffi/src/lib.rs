@@ -49,7 +49,7 @@ pub unsafe extern "C" fn engine_get_games_count() -> u32 {
 /// Never call before initializing with engine_init_game_manager
 #[no_mangle]
 pub unsafe extern "C" fn engine_context_new() -> *mut GameContext {
-    let game_context = GameContext::new(MANAGER.lock().unwrap().random_game().to_owned());
+    let game_context = GameContext::new(MANAGER.lock().unwrap().random_game());
 
     Box::into_raw(Box::new(game_context))
 }
