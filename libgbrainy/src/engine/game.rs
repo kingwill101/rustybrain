@@ -7,7 +7,7 @@ use serde::{Deserialize, Serialize};
 use crate::models::game::Game;
 use crate::models::shared::{Question, Variant};
 
-#[derive(Debug,Serialize, Deserialize)]
+#[derive(Debug, Serialize, Deserialize)]
 pub enum GameType {
     None,
     LogicPuzzle,
@@ -257,7 +257,7 @@ pub struct GameObject {
     pub path: String,
 }
 
-#[derive(Default,Debug, Clone, Serialize, Deserialize)]
+#[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct GameData {
     pub name: String,
     pub game_type: GameType,
@@ -377,7 +377,6 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
 
     let mut game_objects: Vec<GameObject> = [].to_vec();
 
-
     if variant.as_ref().is_none() {
         game_data.variables = match game.variables.as_ref() {
             None => "".to_string(),
@@ -433,7 +432,6 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
         if variant.svg.is_some() {
             let svg = variant.svg.as_ref().unwrap();
 
-
             game_objects.push(GameObject {
                 position: Position {
                     x: svg.get(0).unwrap().x,
@@ -460,7 +458,6 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                     .to_string(),
             }
         }
-
 
         if variant.text.is_some() {
             for opt in variant.text.as_ref().unwrap().iter() {

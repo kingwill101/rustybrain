@@ -1,8 +1,8 @@
 extern crate serde;
 extern crate serde_json;
 
-use crate::engine::Engine;
 use crate::engine::game::{GameData, GameObject, Image};
+use crate::engine::Engine;
 
 fn make_context(game: GameData) -> GameContext {
     let engine = Engine::new();
@@ -43,7 +43,7 @@ impl GameContext {
                 self.game.question.text.plural.as_str(),
                 1,
             )
-                .as_str(),
+            .as_str(),
         )
     }
     pub fn get_rationale(&mut self) -> String {
@@ -53,7 +53,7 @@ impl GameContext {
                 self.game.rationale.text.plural.as_str(),
                 1,
             )
-                .as_str(),
+            .as_str(),
         )
     }
 
