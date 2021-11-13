@@ -176,44 +176,45 @@ pub fn multiple_option_answer_prefix_test() {
         "D a question"
     );
 }
-
-#[test]
-pub fn options_possible_answers_test() {
-    let mut context = GameContext::default();
-
-    context.game.objects = Default::default();
-
-    context.game.answer.text = "[a]".parse().unwrap();
-    assert_eq!(context.options_possible_answers(), "[a]");
-
-    context.game.answer.text = "[a]|[b]".parse().unwrap();
-    assert_eq!(context.options_possible_answers(), "[a] or [b]");
-
-    context.game.answer.text = "[a]|[b]|[c]".parse().unwrap();
-    assert_eq!(context.options_possible_answers(), "[a], [b] or [c]");
-
-    context.game.answer.text = "[a]|[b]|[c]|[d]".parse().unwrap();
-    assert_eq!(context.options_possible_answers(), "[a], [b], [c] or [d]");
-
-    context.game.answer.text = "[a]|[b]|[c]|[d]|[e]".parse().unwrap();
-    assert_eq!(
-        context.options_possible_answers(),
-        "[a], [b], [c], [d] or [e]"
-    );
-}
-
-#[test]
-pub fn options_possible_answers_interop_test() {
-    let mut context = GameContext::default();
-    context.game.answer.text = "[a]|[b]".parse().unwrap();
-    context.engine.set_str_var("a", "1");
-    context.engine.set_str_var("b", "2");
-    assert_eq!(context.options_possible_answers_interop(), "1 or 2");
-
-    context.game.answer.text = "[a]|[b]|[c]|[d]".parse().unwrap();
-    context.engine.set_str_var("a", "1");
-    context.engine.set_str_var("b", "2");
-    context.engine.set_str_var("c", "3");
-    context.engine.set_str_var("d", "4");
-    assert_eq!(context.options_possible_answers_interop(), "1, 2, 3 or 4");
-}
+//
+// #[test]
+// pub fn options_possible_answers_test() {
+//     let mut context = GameContext::default();
+//
+//     context.game.objects = Default::default();
+//
+//     context.game.answer.text = "[a]".parse().unwrap();
+//
+//     assert_eq!(context.options_possible_answers(), "[a]");
+//
+//     context.game.answer.text = "[a]|[b]".parse().unwrap();
+//     assert_eq!(context.options_possible_answers(), "[a] or [b]");
+//
+//     context.game.answer.text = "[a]|[b]|[c]".parse().unwrap();
+//     assert_eq!(context.options_possible_answers(), "[a], [b] or [c]");
+//
+//     context.game.answer.text = "[a]|[b]|[c]|[d]".parse().unwrap();
+//     assert_eq!(context.options_possible_answers(), "[a], [b], [c] or [d]");
+//
+//     context.game.answer.text = "[a]|[b]|[c]|[d]|[e]".parse().unwrap();
+//     assert_eq!(
+//         context.options_possible_answers(),
+//         "[a], [b], [c], [d] or [e]"
+//     );
+// }
+//
+// #[test]
+// pub fn options_possible_answers_interop_test() {
+//     let mut context = GameContext::default();
+//     context.game.answer.text = "[a]|[b]".parse().unwrap();
+//     assert_eq!(context.engine.set_str_var("a", "1"), true);
+//     assert_eq!(context.engine.set_str_var("b", "2"), true);
+//     assert_eq!(context.options_possible_answers_interop(), "1 or 2")
+//
+//     // context.game.answer.text = "[a]|[b]|[c]|[d]".parse().unwrap();
+//     // context.engine.set_str_var("a", "1");
+//     // context.engine.set_str_var("b", "2");
+//     // context.engine.set_str_var("c", "3");
+//     // context.engine.set_str_var("d", "4");
+//     // assert_eq!(context.options_possible_answers_interop(), "1, 2, 3 or 4");
+// }
