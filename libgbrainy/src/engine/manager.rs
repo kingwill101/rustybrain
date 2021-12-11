@@ -15,9 +15,28 @@ impl Manager {
         &self.games
     }
 
+    pub fn find_game_by_cat_n_name(
+        &mut self,
+        game_type: GameType,
+        name: &str,
+    ) -> Option<&GameData> {
+        if !self
+            .games
+            .contains_key(game_type.to_string().as_str())
+        {
+            return None;
+        }
+
+        self.games
+            .get(game_type.to_string().as_str())
+            .unwrap()
+            .iter()
+            .find(|gd| gd.name == name)
+    }
+    
     pub fn game_category_count(&self, game_type: GameType) -> u32 {
         let mut count: u32 = 0;
-        if !self.available_games().contains_key(&game_type.to_string()) {
+        if !self.games.contains_key(&game_type.to_string()) {
             return 0;
         }
         self.games[&game_type.to_string()].iter().for_each(|_| {
@@ -29,8 +48,8 @@ impl Manager {
 
     pub fn game_count(&self) -> u32 {
         let mut count: u32 = 0;
-        for k in self.available_games().keys() {
-            self.available_games()[k].iter().for_each(|_| {
+        for k in self.games.keys() {
+            self.games[k].iter().for_each(|_| {
                 count += 1;
             });
         }
@@ -42,15 +61,13 @@ impl Manager {
     }
 
     fn add_game(&mut self, game: GameData) {
-        self.available_games()
-            .to_owned()
-            .entry(game.game_type.to_string())
+        self.games.entry(game.game_type.to_string())
             .or_insert_with(|| vec![game.clone()])
             .push(game);
     }
 
     pub fn load_games(&mut self, games: Vec<Game>) {
-        for g in games.iter() {
+        games.iter().for_each(|g| {
             if g.variants.as_ref().is_some() {
                 for variant in g.variants.as_ref().unwrap() {
                     let game = grab_game_data(g, Some(variant));
@@ -60,7 +77,7 @@ impl Manager {
                 let game = grab_game_data(g, None);
                 self.add_game(game);
             }
-        }
+        });
     }
 
     pub fn random_game(&self) -> GameData {
