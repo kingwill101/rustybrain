@@ -1,17 +1,13 @@
 extern crate serde;
 extern crate serde_json;
-
-use crate::engine::game::{GameData, GameObject, Image};
 use crate::engine::Engine;
+use crate::engine::game::{GameData, GameObject, Image};
 
 fn make_context(game: GameData) -> GameContext {
     let engine = Engine::new();
     let mut context = GameContext { engine, game };
-    context.engine.parse_variables(&context.game.variables);
-    let possible_answers = context.options_possible_answers_interop();
-    context
-        .engine
-        .set_str_var("option_answers", possible_answers.as_str());
+    context.init_vars();
+
     context
 }
 
@@ -26,6 +22,17 @@ impl GameContext {
 
     pub fn new(game: GameData) -> GameContext {
         make_context(game)
+    }
+
+    pub fn init_vars(&mut self) {
+
+        self.engine.parse_variables(self.game.variables.as_str());
+
+        if self.get_options_count() >= 1 {
+            let answer = self.options_answers_interop();
+            self.engine
+                .set_str_var("option_answers", answer.as_str());
+        }
     }
 
     pub fn get_name(&mut self) -> String {
@@ -43,7 +50,7 @@ impl GameContext {
                 self.game.question.text.plural.as_str(),
                 1,
             )
-            .as_str(),
+                .as_str(),
         )
     }
     pub fn get_rationale(&mut self) -> String {
@@ -53,7 +60,7 @@ impl GameContext {
                 self.game.rationale.text.plural.as_str(),
                 1,
             )
-            .as_str(),
+                .as_str(),
         )
     }
 
@@ -87,7 +94,7 @@ impl GameContext {
         false
     }
 
-    pub fn get_options_count(&mut self) -> u32 {
+    pub fn get_options_count(&self) -> u32 {
         let mut count = 0;
         for obj in self.game.objects.iter() {
             if obj.is_option {
@@ -111,7 +118,7 @@ impl GameContext {
         self.engine.interop(content)
     }
 
-    pub fn options_possible_answers(&mut self) -> String {
+    fn multi_option_answers(&mut self) -> String {
         let mut builder = string_builder::Builder::default();
         let count = self.get_options_count();
 
@@ -143,9 +150,12 @@ impl GameContext {
         builder.string().unwrap()
     }
 
-    pub fn options_possible_answers_interop(&mut self) -> String {
-        let s = self.options_possible_answers();
-        self.engine.interop(s.as_str())
+    pub fn options_answers_interop(&mut self) -> String {
+        if self.get_options_count() >= 1 {
+            let answers = self.multi_option_answers();
+            return self.engine.interop(answers.as_str());
+        }
+        String::new()
     }
 }
 
