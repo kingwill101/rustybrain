@@ -52,16 +52,16 @@ pub struct Svg {
     pub height: f64,
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug,Clone, Serialize, Deserialize)]
 pub struct Text {
     // #[serde(rename = "_text")]
     // pub _text:  Option<String>,
     #[serde(rename = "text")]
-    pub text: Option<String>,
-    pub size: Option<String>,
+    pub text: Option<Box<str>>,
+    pub size: Option<Box<str>>,
     pub x: f64,
     pub y: f64,
-    pub centered: Option<String>,
+    pub centered: Option<Box<str>>,
 }
 
 #[derive(Default, Debug, Serialize, Deserialize)]

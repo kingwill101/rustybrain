@@ -4,7 +4,7 @@ use std::fmt::{Display, Formatter};
 
 use serde::{Deserialize, Serialize};
 
-use crate::models::game::Game;
+use crate::models::game::{Game, GameOption};
 use crate::models::shared::{Question, Variant};
 
 #[derive(Debug, Serialize, Deserialize)]
@@ -46,7 +46,7 @@ impl Display for GameType {
             GameType::None => write!(f, "Unknown"),
             GameType::LogicPuzzle => write!(f, "Logic"),
             GameType::Memory => write!(f, "Memory"),
-            GameType::Calculation => write!(f, "Location"),
+            GameType::Calculation => write!(f, "Calculation"),
             GameType::VerbalAnalogy => write!(f, "Verbal"),
         }
     }
@@ -277,7 +277,11 @@ impl Display for GameData {
             self.name,
             self.game_type.to_string(),
             self.difficulty.to_string()
-        )
+        )?;
+        let mut option_count = 0;
+
+        self.objects.iter().for_each(|_obj| { option_count += 1; });
+        writeln!(f, "options - {}", option_count)
     }
 }
 
@@ -475,7 +479,7 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                             ..Default::default()
                         },
                         centered: match opt.centered.as_ref() {
-                            Some(size) => size == "yes",
+                            Some(size) => size.as_ref() == "yes",
                             None => false,
                         },
                         size: match opt.size.as_ref() {
@@ -490,41 +494,49 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                 });
             }
         }
+        let mut options:Vec<GameOption> = vec![];
 
-        if variant.options.is_some() {
-            for opt in variant.options.as_ref().unwrap().iter() {
-                game_objects.push(GameObject {
-                    position: Position { x: opt.x, y: opt.y },
-                    dimensions: self::Dimensions {
-                        width: opt.width,
-                        height: opt.height,
-                    },
-                    order: ObjectOrder::from_string(opt.order.as_str()),
-                    text: TextObject {
-                        position: Position { x: opt.x, y: opt.y },
-                        text: TObject {
-                            singular: opt
-                                .text
-                                .as_ref()
-                                .unwrap()
-                                .text
-                                .as_ref()
-                                .unwrap()
-                                .to_string(),
-                            ..Default::default()
-                        },
-                        centered: false,
-                        size: ObjectSize::Medium,
-                    },
-                    is_option: true,
-                    is_correct: match opt.correct.as_ref() {
-                        Some(size) => size == "yes",
-                        None => false,
-                    },
-                    ..GameObject::default()
-                });
-            }
+        if variant.options.is_some(){
+            options.append(&mut variant.options.as_ref().unwrap().clone())
         }
+
+        if game.options.is_some() {
+            options.append(&mut game.options.as_ref().unwrap().clone());
+        }
+
+        for opt in options.iter() {
+            game_objects.push(GameObject {
+                position: Position { x: opt.x, y: opt.y },
+                dimensions: self::Dimensions {
+                    width: opt.width,
+                    height: opt.height,
+                },
+                order: ObjectOrder::from_string(opt.order.as_ref()),
+                text: TextObject {
+                    position: Position { x: opt.x, y: opt.y },
+                    text: TObject {
+                        singular: opt
+                            .text
+                            .as_ref()
+                            .unwrap()
+                            .text
+                            .as_ref()
+                            .unwrap()
+                            .to_string(),
+                        ..Default::default()
+                    },
+                    centered: false,
+                    size: ObjectSize::Medium,
+                },
+                is_option: true,
+                is_correct: match opt.correct.as_ref() {
+                    Some(size) => size.as_ref() == "yes",
+                    None => false,
+                },
+                ..GameObject::default()
+            });
+        }
+
         game_data.objects = game_objects;
     }
 

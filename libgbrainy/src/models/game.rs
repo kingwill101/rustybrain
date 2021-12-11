@@ -43,14 +43,14 @@ impl Game {
     }
 }
 
-#[derive(Debug, Serialize, Deserialize)]
+#[derive(Debug, Clone,Serialize, Deserialize)]
 pub struct GameOption {
     pub x: f64,
     pub y: f64,
     pub width: f64,
     pub height: f64,
-    pub order: String,
-    pub correct: Option<String>,
+    pub order: Box<str>,
+    pub correct: Option<Box<str>>,
     #[serde(rename = "string")]
     pub text: Option<Text>,
 }
