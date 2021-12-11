@@ -205,7 +205,7 @@ pub unsafe extern "C" fn engine_free_string(s: *mut c_char) {
     if s.is_null() {
         return;
     }
-    CString::from_raw(s);
+    drop(CString::from_raw(s));
 }
 
 pub fn to_c_str(s: String) -> *mut c_char {

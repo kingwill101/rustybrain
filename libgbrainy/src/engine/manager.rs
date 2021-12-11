@@ -6,6 +6,7 @@ use rand::{self, Rng};
 use crate::engine::game::{grab_game_data, GameData, GameType};
 use crate::models::game::Game;
 
+#[derive(Default)]
 pub struct Manager {
     games: HashMap<String, Vec<GameData>>,
 }
@@ -33,7 +34,7 @@ impl Manager {
             .iter()
             .find(|gd| gd.name == name)
     }
-    
+
     pub fn game_category_count(&self, game_type: GameType) -> u32 {
         let mut count: u32 = 0;
         if !self.games.contains_key(&game_type.to_string()) {
@@ -115,13 +116,5 @@ impl Display for Manager {
             }
         });
         write!(f, "")
-    }
-}
-
-impl Default for Manager {
-    fn default() -> Self {
-        Manager {
-            games: HashMap::new(),
-        }
     }
 }

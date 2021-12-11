@@ -1,7 +1,7 @@
 extern crate colog;
 extern crate log;
 
-use libgbrainy::engine::manager::Manager;
+use libgbrainy::engine::{manager::Manager, game::GameType};
 
 fn main() {
     colog::init();
@@ -17,12 +17,17 @@ fn main() {
             let mut game_manager = Manager::new();
 
             game_manager.load_games(data.games);
-            println!("{}", game_manager);
+            // println!("Games found - {}", game_manager.game_count());
+            // println!("{}", game_manager);
+            // println!("fsafasdfad");
+            let game = game_manager.find_game_by_cat_n_name(
+                GameType::Calculation, "Multiple number");
+            println!("{}",game.unwrap());
             // let mut context =
             //     libgbrainy::engine::context::GameContext::new(game_manager.random_game().clone());
-
+            //
             // println!("{}", context.get_drawing_objects().len());
-            // println!("{}", context.options_possible_answers_interop())
+            // println!("{}", context.options_answers_interop())
         }
     }
 }

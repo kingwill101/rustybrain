@@ -6,4 +6,7 @@ generate:
 bindings: generate
 	pushd mobile && \
 		flutter pub run ffigen && \
-		popd	
+		popd
+
+clippy:
+	cargo clippy -- -D warnings
