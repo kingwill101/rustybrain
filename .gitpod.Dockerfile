@@ -4,6 +4,8 @@ USER root
 
 RUN apt-get update && apt-get install nim
 
+ENV FLUTTER_VERSION=2.8.1-stable
+
 
 # misc deps
 RUN apt-get install -y \
