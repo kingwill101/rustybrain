@@ -1,3 +1,4 @@
+
 image:
     file: .gitpod.Dockerfile
 
@@ -8,19 +9,19 @@ github:
     prebuilds:
         # enable for the master/default branch (defaults to true)
         master: true
-        # enable for all branches in this repo (defaults to false)
+# enable for all branches in this repo (defaults to false)
         branches: true
-        # enable for pull requests coming from this repo (defaults to true)
+# enable for pull requests coming from this repo (defaults to true)
         pullRequests: true
-        # enable for pull requests coming from forks (defaults to false)
+# enable for pull requests coming from forks (defaults to false)
         pullRequestsFromForks: true
-        # add a check to pull requests (defaults to true)
+# add a check to pull requests (defaults to true)
         addCheck: true
-        # add a "Review in Gitpod" button as a comment to pull requests (defaults to false)
+# add a "Review in Gitpod" button as a comment to pull requests (defaults to false)
         addComment: true
-        # add a "Review in Gitpod" button to the pull request's description (defaults to false)
+# add a "Review in Gitpod" button to the pull request's description (defaults to false)
         addBadge: true
-        # add a label once the prebuild is ready to pull requests (defaults to false)
+# add a label once the prebuild is ready to pull requests (defaults to false)
         addLabel: true
 # List the start up tasks. You can start them in parallel in multiple terminals. See https://www.gitpod.io/docs/44_config_start_tasks/
 tasks:
@@ -28,6 +29,13 @@ tasks:
         flutter channel beta
         flutter upgrade
         flutter config --enable-web
+        rustup update
+        rustup component add clippy
         cargo install --path . &&
         cargo test
-            
+
+vscode:
+  extensions:
+    - vadimcn.vscode-lldb
+    - pinage404.rust-extension-pack
+    - hbenl.vscode-test-explorer

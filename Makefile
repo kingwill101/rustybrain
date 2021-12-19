@@ -1,4 +1,6 @@
-.PHONY: generate,bindings
+.DEAFAULT_GOAL:= all
+
+.PHONY: clippy generate bindings
 
 generate:
 	cargo build -p libgbrainy && cargo build -p ffi
@@ -10,3 +12,5 @@ bindings: generate
 
 clippy:
 	cargo clippy -- -D warnings
+
+all: clippy bindings
