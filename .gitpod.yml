@@ -26,11 +26,15 @@ github:
 # List the start up tasks. You can start them in parallel in multiple terminals. See https://www.gitpod.io/docs/44_config_start_tasks/
 tasks:
     - init: >
-        flutter channel beta
+        flutter channel master
         flutter upgrade
         flutter config --enable-web
         rustup update
         rustup component add clippy
+        cargo install wasm-pack 
+        cargo install cargo-generate
+        
+        npm install npm@latest -g
         cargo install --path . &&
         cargo test
 

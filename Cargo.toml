@@ -3,5 +3,6 @@
 members = [
     "rustybrain",
     "libgbrainy",
-    "ffi"
+    "ffi",
+    "wasm"
 ]
