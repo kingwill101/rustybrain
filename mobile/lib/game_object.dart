@@ -25,7 +25,7 @@ class ImageObjectDimensions {
     height = int.tryParse(json["height"]?.toString() ?? '');
   }
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data["width"] = width;
     data["height"] = height;
     return data;
@@ -52,7 +52,7 @@ class ImageObjectPosition {
     y = int.tryParse(json["y"]?.toString() ?? '');
   }
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     data["x"] = x;
     data["y"] = y;
     return data;
@@ -93,7 +93,7 @@ class ImageObject {
     path = json["path"]?.toString();
   }
   Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
+    final Map<String, dynamic> data = <String, dynamic>{};
     if (position != null) {
       data["position"] = position!.toJson();
     }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
-import 'package:mobile/question.dart';
-import 'package:mobile/rustybrain_object.dart';
+import 'package:mobile/question/question_interface.dart'
+    if (dart.library.io) 'package:mobile/question/ffi.dart'
+    if (dart.library.js) 'package:mobile/question/web.dart' show QuestionObject;
+
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:mobile/utils.dart';
 
 void main() {
   runApp(const MyApp());
@@ -52,13 +55,11 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  RustyBrainObject manager = RustyBrainObject();
-
   late QuestionObject question;
 
   void updateQuestion() {
     setState(() {
-      question = QuestionObject(library: manager.lib);
+      question = QuestionObject();
     });
   }
 
@@ -76,7 +77,7 @@ class _MyHomePageState extends State<MyHomePage> {
       ),
       body: _body(),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.query_stats_outlined),
+        child: const Icon(Icons.query_stats_outlined),
         onPressed: updateQuestion,
       ),
     );
@@ -101,7 +102,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(8.0),
               child: Text(
                 question.question,
-                style: TextStyle(fontSize: 30),
+                style: const TextStyle(fontSize: 30),
               ),
             ),
             Text(question.rationale),
