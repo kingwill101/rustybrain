@@ -29,7 +29,7 @@ impl Clone for GameType {
 }
 
 impl GameType {
-    pub(crate) fn from_string(g_type: &str) -> GameType {
+    pub fn from_string(g_type: &str) -> GameType {
         match g_type {
             "Logic" => GameType::LogicPuzzle,
             "Memory" => GameType::Memory,

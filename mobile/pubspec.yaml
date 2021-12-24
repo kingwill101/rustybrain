@@ -34,6 +34,8 @@ dependencies:
   
   more: ^3.3.0
 
+  flame: 1.0.0-releasecandidate.16
+
   provider: ^6.0.1
 
   # The following adds the Cupertino Icons font to your application.
@@ -45,7 +47,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   ffigen:
-  
+
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
   # activated in the `analysis_options.yaml` file located at the root of your
@@ -53,8 +55,6 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
   
-
-
 ffigen:
   name: "Librustybrain"
   description: "ffi interface for rustbrains libgbrainy implementation"
@@ -76,7 +76,7 @@ ffigen:
   
   compiler-opts:
     - '-I/usr/include/llvm'
-    - '-I/usr/lib/clang/12.0.1/include'
+    - '-I/usr/lib/clang/13.0.0/include'
 
 
 
@@ -93,34 +93,34 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/game-graphics/balance.svg
-    - assets/game-graphics/box.svg
-    - assets/game-graphics/bucket.svg
-    - assets/game-graphics/clock.svg
-    - assets/game-graphics/dartboard.svg
-    - assets/game-graphics/dice.svg
-    - assets/game-graphics/faceboy1.svg
-    - assets/game-graphics/faceboy2.svg
-    - assets/game-graphics/faceboy3.svg
-    - assets/game-graphics/facegirl1.svg
-    - assets/game-graphics/facegirl2.svg
-    - assets/game-graphics/facegirl3.svg
-    - assets/game-graphics/family.svg
-    - assets/game-graphics/father_son.svg
-    - assets/game-graphics/handshake.svg
-    - assets/game-graphics/horses_men.svg
-    - assets/game-graphics/lever.svg
-    - assets/game-graphics/money.svg
-    - assets/game-graphics/password.svg
-    - assets/game-graphics/people_table.svg
-    - assets/game-graphics/present.svg
-    - assets/game-graphics/shop.svg
-    - assets/game-graphics/tennis.svg
-    - assets/game-graphics/train_left.svg
-    - assets/game-graphics/train_right.svg
-    - assets/game-graphics/tv_set.svg
-
-    - assets/themes/
+    # - assets/game-graphics/balance.svg
+    # - assets/game-graphics/box.svg
+    # - assets/game-graphics/bucket.svg
+    # - assets/game-graphics/clock.svg
+    # - assets/game-graphics/dartboard.svg
+    # - assets/game-graphics/dice.svg
+    # - assets/game-graphics/faceboy1.svg
+    # - assets/game-graphics/faceboy2.svg
+    # - assets/game-graphics/faceboy3.svg
+    # - assets/game-graphics/facegirl1.svg
+    # - assets/game-graphics/facegirl2.svg
+    # - assets/game-graphics/facegirl3.svg
+    # - assets/game-graphics/family.svg
+    # - assets/game-graphics/father_son.svg
+    # - assets/game-graphics/handshake.svg
+    # - assets/game-graphics/horses_men.svg
+    # - assets/game-graphics/lever.svg
+    # - assets/game-graphics/money.svg
+    # - assets/game-graphics/password.svg
+    # - assets/game-graphics/people_table.svg
+    # - assets/game-graphics/present.svg
+    # - assets/game-graphics/shop.svg
+    # - assets/game-graphics/tennis.svg
+    # - assets/game-graphics/train_left.svg
+    # - assets/game-graphics/train_right.svg
+    # - assets/game-graphics/tv_set.svg
+      - assets/images/
+    # - assets/themes/
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 

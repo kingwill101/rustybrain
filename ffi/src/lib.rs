@@ -4,11 +4,13 @@ extern crate serde_json;
 
 use std::ffi::{CStr, CString};
 use std::os::raw::c_char;
+use std::ptr;
 use std::sync::Mutex;
 
 use lazy_static::lazy_static;
 
 use libgbrainy::engine::context::GameContext;
+use libgbrainy::engine::game::GameType;
 use libgbrainy::engine::manager::Manager;
 
 lazy_static! {
@@ -50,6 +52,27 @@ pub unsafe extern "C" fn engine_get_games_count() -> u32 {
 #[no_mangle]
 pub unsafe extern "C" fn engine_context_new() -> *mut GameContext {
     let game_context = GameContext::new(MANAGER.lock().unwrap().random_game());
+
+    Box::into_raw(Box::new(game_context))
+}
+/// Get a random game from [ category ]
+/// # Safety
+///
+/// Never call before initializing with engine_init_game_manager
+#[no_mangle]
+pub unsafe extern "C" fn engine_context_new_by_category(category: *const c_char) -> *mut GameContext {
+    let c_str = {
+        if category.is_null() {
+            return ptr::null_mut()
+        }
+        CStr::from_ptr(category)
+    };
+
+    let game_context = GameContext::new(
+        MANAGER.lock().unwrap()
+            .random_game_from_category(
+                GameType::from_string(c_str.to_str().unwrap()
+                )));
 
     Box::into_raw(Box::new(game_context))
 }
