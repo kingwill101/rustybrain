@@ -6,7 +6,6 @@ Widget objectsToWidget(Question q) {
   // var parent = Container();
   List<Widget> items = [];
 
-  print(q.image);
   q.drawables
       .where((element) => element.isOption == false)
       .toList()

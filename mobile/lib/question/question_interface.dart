@@ -1,44 +1,44 @@
 import 'package:mobile/game_object.dart';
 
-class Question {
-  String _question = "";
+abstract class Question {
+  String question_ = "";
 
-  String _rationale = "";
+  String rationale_ = "";
 
-  String _name = "";
+  String name_ = "";
 
-  ImageObject? _image;
+  ImageObject? image_;
 
-  List<GameObject> _drawables = [];
+  List<GameObject> drawables_ = [];
 
-  String get question => _question;
+  String get question => question_;
 
   set question(q) {
-    _question = q;
+    question_ = q;
   }
 
-  String get rationale => _rationale;
+  String get rationale => rationale_;
 
   set rationale(r) {
-    _rationale = r;
+    rationale_ = r;
   }
 
-  String get name => _name;
+  String get name => name_;
 
   set name(r) {
-    _name = r;
+    name_ = r;
   }
 
-  ImageObject get image => _image!;
+  ImageObject? get image => image_;
 
   set image(i) {
-    _image = i;
+    image_ = i;
   }
 
-  List<GameObject> get drawables => _drawables;
+  List<GameObject> get drawables => drawables_;
 
   set drawables(r) {
-    _drawables = r;
+    drawables_ = r;
   }
 
   String getPrefix(int index, String ans) {

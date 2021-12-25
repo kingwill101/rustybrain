@@ -20,72 +20,72 @@ class QuestionObject extends Question {
     context = library.engine_context_new();
   }
 
-  String _getQuestion() {
+  @override
+  String get question {
+    if (question_.isNotEmpty) {
+      return question_;
+    }
+
     var rustString = library.engine_context_get_question(context);
 
-    question = rustString.cast<Utf8>().toDartString();
+    question_ = rustString.cast<Utf8>().toDartString();
     library.engine_free_string(rustString);
 
-    return question;
+    return question_;
   }
 
-  String _getRationale() {
+  @override
+  String get rationale {
+    if (rationale_.isNotEmpty) {
+      return rationale_;
+    }
+
     var rustString = library.engine_context_get_rationale(context);
 
-    rationale = rustString.cast<Utf8>().toDartString();
+    rationale_ = rustString.cast<Utf8>().toDartString();
     library.engine_free_string(rustString);
 
-    return rationale;
+    return rationale_;
   }
 
-  String _getName() {
-    var rustString = library.engine_context_get_name(context);
+  @override
+  String get name {
+    if (name_.isEmpty) {
+      var rustString = library.engine_context_get_name(context);
 
-    name = rustString.cast<Utf8>().toDartString();
-    library.engine_free_string(rustString);
+      name_ = rustString.cast<Utf8>().toDartString();
+      library.engine_free_string(rustString);
+    }
 
-    return name;
+    return name_;
   }
 
-  ImageObject _getImage() {
+  @override
+  ImageObject get image {
     var rustString = library.engine_context_get_image(context);
 
     var _imagejson = rustString.cast<Utf8>().toDartString();
     library.engine_free_string(rustString);
-    image =
+    image_ =
         (ImageObject.fromJson(jsonDecode(_imagejson) as Map<String, dynamic>));
 
-    return image;
+    return image_!;
   }
 
-  List<GameObject> _getDrawables() {
+  @override
+  List<GameObject> get drawables {
     var rustString = library.engine_context_get_drawables(context);
 
     var drawableString = rustString.cast<Utf8>().toDartString();
 
-    drawables = (jsonDecode(drawableString) as List)
+    drawables_ = (jsonDecode(drawableString) as List)
         .map((e) => GameObject.fromJson(e))
         .toList();
 
     library.engine_free_string(rustString);
 
-    return drawables;
+    return drawables_;
   }
-
-  @override
-  String get question => _getQuestion();
-
-  @override
-  String get rationale => _getRationale();
-
-  @override
-  String get name => _getName();
-
-  @override
-  ImageObject get image => _getImage();
-
-  @override
-  List<GameObject> get drawables => _getDrawables();
 
   @override
   String getPrefix(int index, String ans) {
