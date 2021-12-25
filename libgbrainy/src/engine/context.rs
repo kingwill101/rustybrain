@@ -64,9 +64,9 @@ impl GameContext {
         )
     }
 
-    pub fn get_drawing_objects(&self) -> Vec<GameObject> {
+    pub fn get_drawing_objects(&self) -> &Vec<GameObject> {
         println!("{} objects found", self.game.objects.len());
-        self.game.objects.clone()
+        &self.game.objects
     }
 
     pub fn check_answer(&mut self, answer: &str) -> bool {

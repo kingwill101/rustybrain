@@ -81,23 +81,21 @@ impl Manager {
         });
     }
 
-    pub fn random_game(&self) -> GameData {
+    pub fn random_game(&self) -> &GameData {
         self.random_game_from_category(GameType::LogicPuzzle)
     }
 
-    fn random_target(&self, registry: Vec<GameData>) -> GameData {
+    fn random_target<'a>(&self, registry: &'a Vec<GameData>) -> &'a GameData {
         registry
             .get(rand::thread_rng().gen_range(0..registry.len()))
-            .unwrap()
-            .to_owned()
+            .unwrap()   
     }
 
-    pub fn random_game_from_category(&self, game_type: GameType) -> GameData {
+    pub fn random_game_from_category(&self, game_type: GameType) -> &GameData {
         let registry = self
             .available_games()
             .get(game_type.to_string().as_str())
-            .unwrap()
-            .clone();
+            .unwrap();
         self.random_target(registry)
     }
 }
