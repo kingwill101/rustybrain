@@ -204,7 +204,8 @@ impl Default for ObjectOrder {
 #[derive(Debug, Default, Clone, Serialize, Deserialize)]
 pub struct TextObject {
     position: Position,
-    text: TObject,
+    #[serde(rename(serialize = "text"))]
+    string: TObject,
     centered: bool,
     size: ObjectSize,
 }
@@ -250,6 +251,8 @@ pub struct GameObject {
     pub position: Position,
     pub dimensions: Dimensions,
     pub order: ObjectOrder,
+
+    #[serde(rename(serialize = "text_object"))]
     pub text: TextObject,
     pub is_option: bool,
     pub is_correct: bool,
@@ -474,7 +477,7 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                     order: ObjectOrder::InOut,
                     text: TextObject {
                         position: Position { x: opt.x, y: opt.y },
-                        text: TObject {
+                        string: TObject {
                             singular: opt.text.as_ref().unwrap().to_string(),
                             ..Default::default()
                         },
@@ -514,7 +517,7 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                 order: ObjectOrder::from_string(opt.order.as_ref()),
                 text: TextObject {
                     position: Position { x: opt.x, y: opt.y },
-                    text: TObject {
+                    string: TObject {
                         singular: opt
                             .text
                             .as_ref()
