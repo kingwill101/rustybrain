@@ -7,8 +7,6 @@ abstract class Question {
 
   String name_ = "";
 
-  ImageObject? image_;
-
   List<GameObject> drawables_ = [];
 
   String get question => question_;
@@ -27,12 +25,6 @@ abstract class Question {
 
   set name(r) {
     name_ = r;
-  }
-
-  ImageObject? get image => image_;
-
-  set image(i) {
-    image_ = i;
   }
 
   List<GameObject> get drawables => drawables_;

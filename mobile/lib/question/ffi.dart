@@ -61,18 +61,6 @@ class QuestionObject extends Question {
   }
 
   @override
-  ImageObject get image {
-    var rustString = library.engine_context_get_image(context);
-
-    var _imagejson = rustString.cast<Utf8>().toDartString();
-    library.engine_free_string(rustString);
-    image_ =
-        (ImageObject.fromJson(jsonDecode(_imagejson) as Map<String, dynamic>));
-
-    return image_!;
-  }
-
-  @override
   List<GameObject> get drawables {
     var rustString = library.engine_context_get_drawables(context);
 
