@@ -14,9 +14,9 @@ Widget objectsToWidget(Question q) {
     items.add(Text(
         q.getPrefix(
             element.index,
-            element.value.text!.text!.plural!.isEmpty
-                ? element.value.text!.text!.singular!
-                : element.value.text!.text!.plural!),
+            element.value.textObject.text.plural.isEmpty
+                ? element.value.textObject!.text!.singular!
+                : element.value.textObject!.text!.plural!),
         style: const TextStyle(fontSize: 22)));
   });
 
@@ -28,9 +28,9 @@ Widget objectsToWidget(Question q) {
     items.add(Text(
       q.getPrefix(
           element.index,
-          element.value.text!.text!.plural!.isEmpty
-              ? element.value.text!.text!.singular!
-              : element.value.text!.text!.plural!),
+          element.value.textObject!.text!.plural!.isEmpty
+              ? element.value.textObject!.text!.singular!
+              : element.value.textObject!.text!.plural!),
       style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
     ));
   });
