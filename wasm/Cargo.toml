@@ -1,6 +1,6 @@
 [package]
-name = "flutter-web-wasm"
-version = "0.1.0"
+name = "librustybrain-wasm"
+version = "0.1.5"
 authors = ["Sach97 <sacha.arbonel@hotmail.fr>"]
 edition = "2021"
 
@@ -9,6 +9,11 @@ crate-type = ["cdylib", "rlib"]
 
 [dependencies]
 wasm-bindgen = "0.2.78"
+libgbrainy = { path = "../libgbrainy" }
+serde = "1.0.130"
+serde_derive = "1.0.130"
+serde_json = "1.0.68"
+lazy_static = "1.4.0"
 
 [dependencies.web-sys]
 version = "0.3.55"

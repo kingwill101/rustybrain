@@ -1,7 +1,7 @@
 /// Support for doing something awesome.
 ///
 /// More dartdocs go here.
-library flutter_web_wasm;
+library rustybrain;
 
 export 'src/flutter_web_wasm_base.dart';
 

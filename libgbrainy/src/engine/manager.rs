@@ -85,7 +85,7 @@ impl Manager {
         self.random_game_from_category(GameType::LogicPuzzle)
     }
 
-    fn random_target<'a>(&self, registry: &'a Vec<GameData>) -> &'a GameData {
+    fn random_target<'a>(&self, registry: &'a [GameData]) -> &'a GameData {
         registry
             .get(rand::thread_rng().gen_range(0..registry.len()))
             .unwrap()   

@@ -1,11 +1,11 @@
-name: flutter_web_wasm
+name: rustybrain
 description: A starting point for Dart libraries or applications.
 # version: 1.0.0
 # homepage: https://www.example.com
 # author: Sach97 <sacha.arbonel@hotmail.fr>
 
 environment:
-  sdk: ">=2.7.0 <3.0.0"
+  sdk: ">=2.12.0 <3.0.0"
 
 dependencies:
   flutter:
