@@ -326,7 +326,7 @@ dependencies = [
 
 [[package]]
 name = "librustybrain-wasm"
-version = "0.1.5"
+version = "0.1.6"
 dependencies = [
  "lazy_static",
  "libgbrainy",

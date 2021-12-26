@@ -1,6 +1,6 @@
 [package]
 name = "librustybrain-wasm"
-version = "0.1.5"
+version = "0.1.6"
 authors = ["Sach97 <sacha.arbonel@hotmail.fr>"]
 edition = "2021"
 
@@ -28,6 +28,6 @@ features = [
 [dev-dependencies]
 wasm-bindgen-test = "0.3.28"
 
-[profile.release]
-# Tell `rustc` to optimize for small code size.
-opt-level = "s"
+#[profile.release]
+## Tell `rustc` to optimize for small code size.
+#opt-level = "s"
