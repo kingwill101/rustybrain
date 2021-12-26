@@ -19,6 +19,9 @@ class Librustybrain {
           lookup)
       : _lookup = lookup;
 
+  /// # Safety
+  ///
+  /// This should be called before any other ffi functions are invoked
   bool engine_init_game_manager() {
     return _engine_init_game_manager() != 0;
   }
@@ -29,6 +32,9 @@ class Librustybrain {
   late final _engine_init_game_manager =
       _engine_init_game_managerPtr.asFunction<int Function()>();
 
+  /// # Safety
+  ///
+  /// Never call before initializing with engine_init_game_manager
   int engine_get_games_count() {
     return _engine_get_games_count();
   }
@@ -39,6 +45,9 @@ class Librustybrain {
   late final _engine_get_games_count =
       _engine_get_games_countPtr.asFunction<int Function()>();
 
+  /// # Safety
+  ///
+  /// Never call before initializing with engine_init_game_manager
   ffi.Pointer<GameContext> engine_context_new() {
     return _engine_context_new();
   }
@@ -49,6 +58,29 @@ class Librustybrain {
   late final _engine_context_new =
       _engine_context_newPtr.asFunction<ffi.Pointer<GameContext> Function()>();
 
+  /// Get a random game from [ category ]
+  /// # Safety
+  ///
+  /// Never call before initializing with engine_init_game_manager
+  ffi.Pointer<GameContext> engine_context_new_by_category(
+    ffi.Pointer<ffi.Int8> category,
+  ) {
+    return _engine_context_new_by_category(
+      category,
+    );
+  }
+
+  late final _engine_context_new_by_categoryPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<GameContext> Function(
+              ffi.Pointer<ffi.Int8>)>>('engine_context_new_by_category');
+  late final _engine_context_new_by_category =
+      _engine_context_new_by_categoryPtr.asFunction<
+          ffi.Pointer<GameContext> Function(ffi.Pointer<ffi.Int8>)>();
+
+  /// # Safety
+  ///
+  /// Always make sure that GameContext ptr is always valid before passing
   ffi.Pointer<ffi.Int8> engine_context_get_question(
     ffi.Pointer<GameContext> ptr,
   ) {
@@ -64,6 +96,9 @@ class Librustybrain {
   late final _engine_context_get_question = _engine_context_get_questionPtr
       .asFunction<ffi.Pointer<ffi.Int8> Function(ffi.Pointer<GameContext>)>();
 
+  /// # Safety
+  ///
+  /// Always make sure that GameContext ptr is always valid before passing
   ffi.Pointer<ffi.Int8> engine_context_get_rationale(
     ffi.Pointer<GameContext> ptr,
   ) {
@@ -79,6 +114,9 @@ class Librustybrain {
   late final _engine_context_get_rationale = _engine_context_get_rationalePtr
       .asFunction<ffi.Pointer<ffi.Int8> Function(ffi.Pointer<GameContext>)>();
 
+  /// # Safety
+  ///
+  /// Always make sure that GameContext ptr is always valid before passing
   ffi.Pointer<ffi.Int8> engine_context_get_name(
     ffi.Pointer<GameContext> ptr,
   ) {
@@ -94,6 +132,9 @@ class Librustybrain {
   late final _engine_context_get_name = _engine_context_get_namePtr
       .asFunction<ffi.Pointer<ffi.Int8> Function(ffi.Pointer<GameContext>)>();
 
+  /// # Safety
+  ///
+  /// Always make sure that GameContext ptr is always valid before passing
   ffi.Pointer<ffi.Int8> engine_context_get_drawables(
     ffi.Pointer<GameContext> ptr,
   ) {
@@ -109,6 +150,9 @@ class Librustybrain {
   late final _engine_context_get_drawables = _engine_context_get_drawablesPtr
       .asFunction<ffi.Pointer<ffi.Int8> Function(ffi.Pointer<GameContext>)>();
 
+  /// # Safety
+  ///
+  /// Always make sure that GameContext ptr is always valid before passing
   ffi.Pointer<ffi.Int8> engine_context_get_image(
     ffi.Pointer<GameContext> ptr,
   ) {
@@ -124,6 +168,9 @@ class Librustybrain {
   late final _engine_context_get_image = _engine_context_get_imagePtr
       .asFunction<ffi.Pointer<ffi.Int8> Function(ffi.Pointer<GameContext>)>();
 
+  /// # Safety
+  ///
+  /// Always make sure that GameContext ptr is always valid before passing
   ffi.Pointer<ffi.Int8> engine_context_get_possible_answers(
     ffi.Pointer<GameContext> ptr,
   ) {
@@ -140,6 +187,9 @@ class Librustybrain {
       _engine_context_get_possible_answersPtr.asFunction<
           ffi.Pointer<ffi.Int8> Function(ffi.Pointer<GameContext>)>();
 
+  /// # Safety
+  ///
+  /// Always make sure that GameContext ptr is always valid before passing
   bool engine_context_check_answer(
     ffi.Pointer<GameContext> ptr,
     ffi.Pointer<ffi.Int8> s,
@@ -159,6 +209,9 @@ class Librustybrain {
       _engine_context_check_answerPtr.asFunction<
           int Function(ffi.Pointer<GameContext>, ffi.Pointer<ffi.Int8>)>();
 
+  /// # Safety
+  ///
+  /// Always make sure that GameContext ptr is always valid before passing
   ffi.Pointer<ffi.Int8> engine_context_get_option_prefix(
     ffi.Pointer<GameContext> ptr,
     int index,
@@ -180,6 +233,9 @@ class Librustybrain {
           ffi.Pointer<ffi.Int8> Function(
               ffi.Pointer<GameContext>, int, ffi.Pointer<ffi.Int8>)>();
 
+  /// # Safety
+  ///
+  /// This should always be called after consuming any rust strings
   void engine_free_string(
     ffi.Pointer<ffi.Int8> s,
   ) {
