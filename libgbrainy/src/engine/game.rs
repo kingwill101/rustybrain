@@ -260,6 +260,13 @@ pub struct GameObject {
     pub path: String,
 }
 
+impl Display for GameObject {
+    fn fmt(&self, f: &mut Formatter<'_>) -> std::fmt::Result {
+        let json = serde_json::to_string(self);
+        writeln!(f, "{}", json.unwrap())
+    }
+}
+
 #[derive(Default, Debug, Clone, Serialize, Deserialize)]
 pub struct GameData {
     pub name: String,
@@ -282,7 +289,9 @@ impl Display for GameData {
             self.difficulty.to_string()
         )?;
         let mut option_count = 0;
-
+        for obj in &self.objects {
+            if writeln!(f, "{}", obj).is_ok() {}
+        }
         self.objects.iter().for_each(|_obj| { option_count += 1; });
         writeln!(f, "options - {}", option_count)
     }
@@ -384,6 +393,7 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
 
     let mut game_objects: Vec<GameObject> = [].to_vec();
 
+
     if variant.as_ref().is_none() {
         game_data.variables = match game.variables.as_ref() {
             None => "".to_string(),
@@ -420,6 +430,29 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
             ..GameObject::default()
         });
     } else {
+
+        //It is possible to have images placed in the global game object
+        if game.svg.is_some() {
+            let svg = game.svg.as_ref().unwrap();
+
+            for _svg in svg {
+                game_objects.push(GameObject {
+                    position: Position {
+                        x: _svg.x,
+                        y: _svg.y,
+                    },
+                    dimensions: Dimensions {
+                        width: _svg.width,
+                        height: _svg.height,
+                    },
+                    path: _svg.file.as_str().to_string(),
+                    is_image: true,
+                    ..GameObject::default()
+                });
+            }
+        }
+
+
         let variant = variant.as_ref().unwrap();
 
         game_data.variables = if variant.variables.is_some() {
@@ -439,19 +472,21 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
         if variant.svg.is_some() {
             let svg = variant.svg.as_ref().unwrap();
 
-            game_objects.push(GameObject {
-                position: Position {
-                    x: svg.get(0).unwrap().x,
-                    y: svg.get(0).unwrap().y,
-                },
-                dimensions: Dimensions {
-                    width: svg.get(0).unwrap().width,
-                    height: svg.get(0).unwrap().height,
-                },
-                path: svg.get(0).unwrap().file.as_str().to_string(),
-                is_image: true,
-                ..GameObject::default()
-            });
+            for _svg in svg {
+                game_objects.push(GameObject {
+                    position: Position {
+                        x: _svg.x,
+                        y: _svg.y,
+                    },
+                    dimensions: Dimensions {
+                        width: _svg.width,
+                        height: _svg.height,
+                    },
+                    path: _svg.file.as_str().to_string(),
+                    is_image: true,
+                    ..GameObject::default()
+                });
+            }
         }
         if variant.answer.is_some() {
             game_data.answer = AnswerObject {
@@ -497,9 +532,9 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                 });
             }
         }
-        let mut options:Vec<GameOption> = vec![];
+        let mut options: Vec<GameOption> = vec![];
 
-        if variant.options.is_some(){
+        if variant.options.is_some() {
             options.append(&mut variant.options.as_ref().unwrap().clone())
         }
 
@@ -542,6 +577,7 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
 
         game_data.objects = game_objects;
     }
+
 
     game_data.question = question;
     game_data
