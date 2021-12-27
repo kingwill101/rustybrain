@@ -258,6 +258,28 @@ class Librustybrain {
 
   /// # Safety
   ///
+  /// Always make sure that GameContext ptr is always valid before passing
+  ffi.Pointer<ffi.Int8> engine_context_string_interop(
+    ffi.Pointer<GameContext> ptr,
+    ffi.Pointer<ffi.Int8> content,
+  ) {
+    return _engine_context_string_interop(
+      ptr,
+      content,
+    );
+  }
+
+  late final _engine_context_string_interopPtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<ffi.Int8> Function(ffi.Pointer<GameContext>,
+              ffi.Pointer<ffi.Int8>)>>('engine_context_string_interop');
+  late final _engine_context_string_interop =
+      _engine_context_string_interopPtr.asFunction<
+          ffi.Pointer<ffi.Int8> Function(
+              ffi.Pointer<GameContext>, ffi.Pointer<ffi.Int8>)>();
+
+  /// # Safety
+  ///
   /// This should always be called after consuming any rust strings
   void engine_free_string(
     ffi.Pointer<ffi.Int8> s,

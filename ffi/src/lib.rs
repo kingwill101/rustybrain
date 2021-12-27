@@ -10,7 +10,7 @@ use std::sync::Mutex;
 use lazy_static::lazy_static;
 
 use libgbrainy::engine::context::GameContext;
-use libgbrainy::engine::game::GameType;
+use libgbrainy::engine::game::{ GameType};
 use libgbrainy::engine::manager::Manager;
 
 lazy_static! {
@@ -55,6 +55,7 @@ pub unsafe extern "C" fn engine_context_new() -> *mut GameContext {
 
     Box::into_raw(Box::new(game_context))
 }
+
 /// Get a random game from [ category ]
 /// # Safety
 ///
@@ -63,7 +64,7 @@ pub unsafe extern "C" fn engine_context_new() -> *mut GameContext {
 pub unsafe extern "C" fn engine_context_new_by_category(category: *const c_char) -> *mut GameContext {
     let c_str = {
         if category.is_null() {
-            return ptr::null_mut()
+            return ptr::null_mut();
         }
         CStr::from_ptr(category)
     };
@@ -252,6 +253,28 @@ pub unsafe extern "C" fn engine_context_get_option_prefix(
     };
 
     to_c_str(context.replace_option_answer_prefix(index, c_str.to_str().unwrap()))
+}
+
+/// # Safety
+///
+/// Always make sure that GameContext ptr is always valid before passing
+#[no_mangle]
+pub unsafe extern "C" fn engine_context_string_interop(
+    ptr: *mut GameContext,
+    content: *const c_char,
+) -> *mut c_char {
+    if ptr.is_null() {
+        return to_c_str("".to_string());
+    }
+
+    let context = &mut *ptr;
+
+    let c_str = {
+        assert!(!content.is_null());
+        CStr::from_ptr(content)
+    };
+
+    to_c_str(context.string_interop(c_str.to_str().unwrap().to_string()))
 }
 
 /// # Safety

@@ -36,6 +36,10 @@ abstract class Question {
   String getPrefix(int index, String ans) {
     return ans;
   }
+
+  String interop(String s){
+    return s;
+  }
 }
 
 class QuestionObject extends Question {}

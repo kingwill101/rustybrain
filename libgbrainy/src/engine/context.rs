@@ -1,5 +1,6 @@
 extern crate serde;
 extern crate serde_json;
+
 use crate::engine::Engine;
 use crate::engine::game::{GameData, GameObject, Image};
 
@@ -25,7 +26,6 @@ impl GameContext {
     }
 
     pub fn init_vars(&mut self) {
-
         self.engine.parse_variables(self.game.variables.as_str());
 
         if self.get_options_count() >= 1 {
@@ -150,10 +150,14 @@ impl GameContext {
         builder.string().unwrap()
     }
 
+    pub fn string_interop(&mut self, s: String) -> String {
+        return self.engine.interop(s.as_str());
+    }
+
     pub fn options_answers_interop(&mut self) -> String {
         if self.get_options_count() >= 1 {
             let answers = self.multi_option_answers();
-            return self.engine.interop(answers.as_str());
+            return self.string_interop(answers);
         }
         String::new()
     }

@@ -44,6 +44,10 @@ impl WrappedContext {
         }
     }
 
+    pub fn string_interop(&mut self, s: String) -> String {
+        self.context.string_interop(s)
+    }
+
     pub fn get_question(&mut self) -> String {
         self.context.get_question()
     }

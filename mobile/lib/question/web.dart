@@ -61,4 +61,9 @@ class QuestionObject extends Question {
   String getPrefix(int index, String ans) {
     return contextHolder.get_option_prefix(index, ans);
   }
+
+  @override
+  String interop(String s) {
+    return contextHolder.string_interop(s);
+  }
 }

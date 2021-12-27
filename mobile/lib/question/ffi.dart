@@ -86,4 +86,15 @@ class QuestionObject extends Question {
     library.engine_free_string(str);
     return value;
   }
+
+  @override
+  String interop(String s) {
+    var dartNativeString = s.toNativeUtf8().cast<Int8>();
+
+    var str = library.engine_context_string_interop(context, dartNativeString);
+
+    var value = str.cast<Utf8>().toDartString();
+    library.engine_free_string(str);
+    return value;
+  }
 }
