@@ -88,7 +88,7 @@ impl Manager {
     fn random_target<'a>(&self, registry: &'a [GameData]) -> &'a GameData {
         registry
             .get(rand::thread_rng().gen_range(0..registry.len()))
-            .unwrap()   
+            .unwrap()
     }
 
     pub fn random_game_from_category(&self, game_type: GameType) -> &GameData {
@@ -97,6 +97,21 @@ impl Manager {
             .get(game_type.to_string().as_str())
             .unwrap();
         self.random_target(registry)
+    }
+
+    pub fn get_game_from_category_with_name(&self, game_type: GameType, name: String) -> Option<&GameData> {
+        let registry = self
+            .available_games()
+            .get(game_type.to_string().as_str())
+            .unwrap();
+
+        for x in registry {
+            if x.name == name {
+                return Some(x);
+            }
+        }
+
+        None
     }
 }
 

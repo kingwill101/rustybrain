@@ -77,6 +77,40 @@ pub unsafe extern "C" fn engine_context_new_by_category(category: *const c_char)
     Box::into_raw(Box::new(game_context))
 }
 
+/// Get a random game from [ category ]
+/// # Safety
+///
+/// Never call before initializing with engine_init_game_manager
+#[no_mangle]
+pub unsafe extern "C" fn engine_context_new_by_category_name(category: *const c_char, name: *const c_char) -> *mut GameContext {
+    let c_str = {
+        if category.is_null() {
+            return ptr::null_mut();
+        }
+        CStr::from_ptr(category)
+    };
+
+    let n_str = {
+        if name.is_null() {
+            return ptr::null_mut();
+        }
+        CStr::from_ptr(name)
+    };
+
+    match MANAGER.lock().as_ref().unwrap()
+        .get_game_from_category_with_name(
+            GameType::from_string(c_str.to_str().unwrap()),
+            n_str.to_str().unwrap().to_string(),
+        ) {
+        None => { ptr::null_mut() }
+        Some(d) => {
+            let game_context = GameContext::new(d.to_owned());
+            Box::into_raw(Box::new(game_context))
+        }
+    }
+}
+
+
 /// # Safety
 ///
 /// Always make sure that GameContext ptr is always valid before passing

@@ -78,6 +78,29 @@ class Librustybrain {
       _engine_context_new_by_categoryPtr.asFunction<
           ffi.Pointer<GameContext> Function(ffi.Pointer<ffi.Int8>)>();
 
+  /// Get a random game from [ category ]
+  /// # Safety
+  ///
+  /// Never call before initializing with engine_init_game_manager
+  ffi.Pointer<GameContext> engine_context_new_by_category_name(
+    ffi.Pointer<ffi.Int8> category,
+    ffi.Pointer<ffi.Int8> name,
+  ) {
+    return _engine_context_new_by_category_name(
+      category,
+      name,
+    );
+  }
+
+  late final _engine_context_new_by_category_namePtr = _lookup<
+      ffi.NativeFunction<
+          ffi.Pointer<GameContext> Function(ffi.Pointer<ffi.Int8>,
+              ffi.Pointer<ffi.Int8>)>>('engine_context_new_by_category_name');
+  late final _engine_context_new_by_category_name =
+      _engine_context_new_by_category_namePtr.asFunction<
+          ffi.Pointer<GameContext> Function(
+              ffi.Pointer<ffi.Int8>, ffi.Pointer<ffi.Int8>)>();
+
   /// # Safety
   ///
   /// Always make sure that GameContext ptr is always valid before passing
