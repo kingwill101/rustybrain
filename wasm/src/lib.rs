@@ -65,7 +65,8 @@ impl WrappedContext {
     }
 
     pub fn get_option_prefix(&mut self, index: Option<u8>, content: String) -> String {
-        self.context.replace_option_answer_prefix(index.unwrap(), content.as_str())
+        self.context
+            .replace_option_answer_prefix(index.unwrap(), content.as_str())
     }
 }
 
@@ -86,33 +87,34 @@ pub fn new_context() -> WrappedContext {
 #[wasm_bindgen]
 pub fn new_by_category(cat: String) -> WrappedContext {
     let game_context = GameContext::new(
-        MANAGER.lock().unwrap()
-            .random_game_from_category(
-                GameType::from_string(cat.as_str()
-                )).to_owned());
+        MANAGER
+            .lock()
+            .unwrap()
+            .random_game_from_category(GameType::from_string(cat.as_str()))
+            .to_owned(),
+    );
 
     WrappedContext {
         context: game_context,
     }
 }
 
-
 #[wasm_bindgen]
 pub fn new_by_category_name(cat: String, name: String) -> WrappedContext {
-    match MANAGER.lock().as_ref().unwrap()
-        .get_game_from_category_with_name(
-            GameType::from_string(cat.as_str()),
-            name,
-        ) {
-        None => { WrappedContext { context: Default::default() } }
-        Some(d) => {
-            WrappedContext {
-                context: GameContext::new(d.to_owned()),
-            }
-        }
+    match MANAGER
+        .lock()
+        .as_ref()
+        .unwrap()
+        .get_game_from_category_with_name(GameType::from_string(cat.as_str()), name)
+    {
+        None => WrappedContext {
+            context: Default::default(),
+        },
+        Some(d) => WrappedContext {
+            context: GameContext::new(d.to_owned()),
+        },
     }
 }
-
 
 #[wasm_bindgen]
 pub fn new_context_by_category(cat: String) -> WrappedContext {

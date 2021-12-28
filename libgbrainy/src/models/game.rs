@@ -43,7 +43,7 @@ impl Game {
     }
 }
 
-#[derive(Debug, Clone,Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct GameOption {
     pub x: f64,
     pub y: f64,

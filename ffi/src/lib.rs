@@ -10,7 +10,7 @@ use std::sync::Mutex;
 use lazy_static::lazy_static;
 
 use libgbrainy::engine::context::GameContext;
-use libgbrainy::engine::game::{ GameType};
+use libgbrainy::engine::game::GameType;
 use libgbrainy::engine::manager::Manager;
 
 lazy_static! {
@@ -61,7 +61,9 @@ pub unsafe extern "C" fn engine_context_new() -> *mut GameContext {
 ///
 /// Never call before initializing with engine_init_game_manager
 #[no_mangle]
-pub unsafe extern "C" fn engine_context_new_by_category(category: *const c_char) -> *mut GameContext {
+pub unsafe extern "C" fn engine_context_new_by_category(
+    category: *const c_char,
+) -> *mut GameContext {
     let c_str = {
         if category.is_null() {
             return ptr::null_mut();
@@ -70,10 +72,12 @@ pub unsafe extern "C" fn engine_context_new_by_category(category: *const c_char)
     };
 
     let game_context = GameContext::new(
-        MANAGER.lock().unwrap()
-            .random_game_from_category(
-                GameType::from_string(c_str.to_str().unwrap()
-                )).to_owned());
+        MANAGER
+            .lock()
+            .unwrap()
+            .random_game_from_category(GameType::from_string(c_str.to_str().unwrap()))
+            .to_owned(),
+    );
 
     Box::into_raw(Box::new(game_context))
 }
@@ -83,7 +87,10 @@ pub unsafe extern "C" fn engine_context_new_by_category(category: *const c_char)
 ///
 /// Never call before initializing with engine_init_game_manager
 #[no_mangle]
-pub unsafe extern "C" fn engine_context_new_by_category_name(category: *const c_char, name: *const c_char) -> *mut GameContext {
+pub unsafe extern "C" fn engine_context_new_by_category_name(
+    category: *const c_char,
+    name: *const c_char,
+) -> *mut GameContext {
     let c_str = {
         if category.is_null() {
             return ptr::null_mut();
@@ -98,19 +105,21 @@ pub unsafe extern "C" fn engine_context_new_by_category_name(category: *const c_
         CStr::from_ptr(name)
     };
 
-    match MANAGER.lock().as_ref().unwrap()
+    match MANAGER
+        .lock()
+        .as_ref()
+        .unwrap()
         .get_game_from_category_with_name(
             GameType::from_string(c_str.to_str().unwrap()),
             n_str.to_str().unwrap().to_string(),
         ) {
-        None => { ptr::null_mut() }
+        None => ptr::null_mut(),
         Some(d) => {
             let game_context = GameContext::new(d.to_owned());
             Box::into_raw(Box::new(game_context))
         }
     }
 }
-
 
 /// # Safety
 ///

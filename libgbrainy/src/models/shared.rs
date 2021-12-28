@@ -52,7 +52,7 @@ pub struct Svg {
     pub height: f64,
 }
 
-#[derive(Debug,Clone, Serialize, Deserialize)]
+#[derive(Debug, Clone, Serialize, Deserialize)]
 pub struct Text {
     // #[serde(rename = "_text")]
     // pub _text:  Option<String>,

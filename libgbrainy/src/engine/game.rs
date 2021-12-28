@@ -292,7 +292,9 @@ impl Display for GameData {
         for obj in &self.objects {
             if writeln!(f, "{}", obj).is_ok() {}
         }
-        self.objects.iter().for_each(|_obj| { option_count += 1; });
+        self.objects.iter().for_each(|_obj| {
+            option_count += 1;
+        });
         writeln!(f, "options - {}", option_count)
     }
 }
@@ -393,7 +395,6 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
 
     let mut game_objects: Vec<GameObject> = [].to_vec();
 
-
     if variant.as_ref().is_none() {
         game_data.variables = match game.variables.as_ref() {
             None => "".to_string(),
@@ -430,7 +431,6 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
             ..GameObject::default()
         });
     } else {
-
         //It is possible to have images placed in the global game object
         if game.svg.is_some() {
             let svg = game.svg.as_ref().unwrap();
@@ -451,7 +451,6 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
                 });
             }
         }
-
 
         let variant = variant.as_ref().unwrap();
 
@@ -577,7 +576,6 @@ pub fn grab_game_data(game: &Game, variant: Option<&Variant>) -> GameData {
 
         game_data.objects = game_objects;
     }
-
 
     game_data.question = question;
     game_data

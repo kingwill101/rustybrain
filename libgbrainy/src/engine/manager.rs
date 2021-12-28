@@ -21,10 +21,7 @@ impl Manager {
         game_type: GameType,
         name: &str,
     ) -> Option<&GameData> {
-        if !self
-            .games
-            .contains_key(game_type.to_string().as_str())
-        {
+        if !self.games.contains_key(game_type.to_string().as_str()) {
             return None;
         }
 
@@ -62,7 +59,8 @@ impl Manager {
     }
 
     fn add_game(&mut self, game: GameData) {
-        self.games.entry(game.game_type.to_string())
+        self.games
+            .entry(game.game_type.to_string())
             .or_insert_with(|| vec![game.clone()])
             .push(game);
     }
@@ -99,7 +97,11 @@ impl Manager {
         self.random_target(registry)
     }
 
-    pub fn get_game_from_category_with_name(&self, game_type: GameType, name: String) -> Option<&GameData> {
+    pub fn get_game_from_category_with_name(
+        &self,
+        game_type: GameType,
+        name: String,
+    ) -> Option<&GameData> {
         let registry = self
             .available_games()
             .get(game_type.to_string().as_str())
