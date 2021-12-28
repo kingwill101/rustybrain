@@ -11,6 +11,10 @@ external bool init_manager();
 @JS()
 external WrappedContext new_context();
 @JS()
+external WrappedContext new_by_category(String cat);
+@JS()
+external WrappedContext new_by_category_name(String cat, String name);
+@JS()
 external WrappedContext new_context_by_category(String cat);
 @JS()
 external void main();
@@ -30,6 +34,7 @@ class WrappedContext {
   external WrappedContext.fakeConstructor$();
   external void free();
   external factory WrappedContext();
+  external String string_interop(String s);
   external String get_question();
   external String get_rationale();
   external String get_name();

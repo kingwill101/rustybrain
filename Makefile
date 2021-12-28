@@ -10,6 +10,8 @@ install:
 generate:
 	cargo build -p libgbrainy && cargo build -p ffi
 	pushd wasm && wasm-pack build --release --target web
+
+dart_wasm:
 	rm -rf wasm/lib/src/flutter_web_wasm_base.dart
 	dart_js_facade_gen wasm/pkg/librustybrain_wasm.d.ts | tee wasm/lib/src/flutter_web_wasm_base.dart
 

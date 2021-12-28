@@ -1,6 +1,6 @@
 [package]
 name = "librustybrain-wasm"
-version = "0.1.6"
+version = "0.1.12"
 authors = ["Sach97 <sacha.arbonel@hotmail.fr>"]
 edition = "2021"
 
