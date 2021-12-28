@@ -4,7 +4,7 @@ import 'package:mobile/question/question_interface.dart'
     if (dart.library.io) 'package:mobile/question/ffi.dart'
     if (dart.library.js) 'package:mobile/question/web.dart' show QuestionObject;
 
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:media_break_points/media_break_points.dart';
 import 'package:mobile/utils.dart';
 
 void main() {
@@ -55,7 +55,7 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late QuestionObject question;
+  QuestionObject question = QuestionObject();
 
   void updateQuestion() {
     setState(() {
@@ -66,15 +66,14 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   void initState() {
     super.initState();
-    updateQuestion();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: Text(question.name),
-      ),
+      // appBar: AppBar(
+      //   title: Text(question.name),
+      // ),
       body: _body(),
       floatingActionButton: FloatingActionButton(
         child: const Icon(Icons.query_stats_outlined),
@@ -84,39 +83,41 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Widget _body() {
-    return Stack(
-      children: <Widget>[
-        SvgPicture.asset(
-          'assets/themes/notebook_background.svg',
-          alignment: Alignment.center,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          fit: BoxFit.fill,
-        ),
-        Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          mainAxisSize: MainAxisSize.max,
-          children: <Widget>[
-            Container(
-              margin: const EdgeInsets.all(30),
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                question.question,
-                style: const TextStyle(fontSize: 30),
-              ),
+    return Container(
+      width: MediaQuery.of(context).size.width,
+      height: MediaQuery.of(context).size.height,
+      decoration: const BoxDecoration(color: Color.fromRGBO(255, 252, 231, 1)),
+      child: Column(
+        children: [
+          Container(
+            margin: const EdgeInsets.all(20),
+            child: Text(
+              question.question,
+              style: const TextStyle(fontSize: 20),
             ),
-            Text(question.rationale),
-            objectsToWidget(question),
-            FutureBuilder(
-                builder: (context, snapshot) => question.image.path!.isEmpty
-                    ? const SizedBox()
-                    : SvgPicture.asset(
-                        "assets/game-graphics/${question.image.path}"))
+          ),
+          Builder(builder: (context) {
+            var width = valueFor<double>(context,
+                defaultValue: 300, xs: 400, sm: 500, md: 600, lg: 700, xl: 800);
+            var height = valueFor<double>(context,
+                defaultValue: 300,
+                xs: 400,
+                sm: 500,
+                md: 600,
+                lg: 700,
+                xl: 800)!;
 
-            // ignore: prefer_const_literals_to_create_immutables
-          ],
-        ),
-      ],
+            return SizedBox(
+                width: width,
+                height: height,
+                child: objectsToStack(
+                  question,
+                  width!,
+                  height,
+                ));
+          })
+        ],
+      ),
     );
   }
 }

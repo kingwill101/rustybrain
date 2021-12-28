@@ -2,15 +2,15 @@ import 'dart:convert';
 
 import 'package:mobile/game_object.dart';
 import 'package:mobile/question/question_interface.dart';
-import 'package:rustybrain/rustybrain.dart';
+import 'package:rustybrain/rustybrain.dart' as rustybrain;
 
 class QuestionObject extends Question {
-  late WrappedContext contextHolder;
+  late rustybrain.WrappedContext contextHolder;
 
   QuestionObject() {
-    assert(init_manager() == true);
+    assert(rustybrain.init_manager() == true);
 
-    contextHolder = new_context();
+    contextHolder = rustybrain.new_context();
   }
 
   @override

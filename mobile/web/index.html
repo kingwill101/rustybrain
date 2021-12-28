@@ -36,12 +36,19 @@
 <body>
 
 <script type="module">
-  import init, { init_manager, new_context, add, main,new_context_by_category, WrappedContext, MANAGER} from "https://www.unpkg.com/librustybrain-wasm@0.1.6/librustybrain_wasm.js";
+  import init, { init_manager,main } from "https://www.unpkg.com/librustybrain-wasm@0.1.12/librustybrain_wasm.js";
+  import { WrappedContext, MANAGER} from "https://www.unpkg.com/librustybrain-wasm@0.1.12/librustybrain_wasm.js";
+  import {new_context,new_context_by_category,new_by_category_name} from "https://www.unpkg.com/librustybrain-wasm@0.1.12/librustybrain_wasm.js";
 
   window.init_manager = init_manager;
   window.new_context = new_context;
+  window.new_context_by_category = new_context_by_category;
+  window.new_by_category_name = new_by_category_name;
   window.WrappedContext = WrappedContext;
   window.MANAGER = MANAGER;
+
+  try{
+  new_context_by_category("Lever")}catch(err){console.log(err);}
 
   var scriptLoaded  = false;
    function loadMainDartJs() {
