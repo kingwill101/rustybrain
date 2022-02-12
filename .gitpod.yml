@@ -47,3 +47,5 @@ vscode:
     - vadimcn.vscode-lldb
     - pinage404.rust-extension-pack
     - hbenl.vscode-test-explorer
+    - Dart-Code.flutter
+    - jeroen-meijer.pubspec-assist
