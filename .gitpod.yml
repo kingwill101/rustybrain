@@ -28,7 +28,7 @@ tasks:
     - init: >
         flutter channel master
         flutter upgrade
-        flutter config --enable-web
+   
         rustup update
         rustup component add clippy
         cargo install wasm-pack 
@@ -37,6 +37,10 @@ tasks:
         npm install npm@latest -g
         cargo install --path . &&
         cargo test
+
+        flutter config --enable-web
+
+
 
 vscode:
   extensions:
